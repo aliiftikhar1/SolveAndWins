@@ -1,5 +1,5 @@
 'use client'
-import AddQuestion from "./AddQuestion";
+import AddQuestion from "./AddReviews";
 
 export default function ManageUsers() {
   return (
