@@ -2,8 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode'; 
 
 export default function Competition() {
+  const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [login, setuserlogin] = useState(false);
   const [competitions, setCompetitions] = useState([]);
   const router = useRouter();
 
@@ -22,10 +28,36 @@ export default function Competition() {
     fetchCompetitions();
   }, []);
 
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+    
+    } else {
+      setuserlogin(true);
+      const decodedToken = jwtDecode(token);
+      setUserName(decodedToken.name);
+      setUserEmail(decodedToken.email);
+      setUserRole(decodedToken.role);
+      console.log("---DECODED----");
+      console.log(
+        "Name",
+        decodedToken.name,
+        "email",
+        decodedToken.email,
+        "Role",
+        decodedToken.role
+      );
+    }
+  }, [router]);
+
   // Handle start button click
   const handleStartCompetition = (competitionId) => {
-    router.push(`/pages/question/${competitionId}`);
-    console.log(`Starting competition with ID: ${competitionId}`);
+    if(login === true){
+      router.push(`/pages/question/${competitionId}`);
+      console.log(`Starting competition with ID: ${competitionId}`);
+    }else{
+      router.push(`/UserLogin`);
+    }
   };
 
   return (
@@ -34,46 +66,59 @@ export default function Competition() {
         <h1 className="text-5xl font-extrabold mb-12 text-center text-white">
           Explore Competitions
         </h1>
-        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4">
           {competitions.map((competition) => (
             <div
               key={competition.id}
-              className="bg-gray-800/30 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="flex bg-gray-800/30 h-72 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
-              {/* Replace with actual image URL */}
-              <img
-                src={
-                  competition.imageUrl ||
-                  'https://cdn.pixabay.com/photo/2024/01/17/12/06/car-8514314_640.png'
-                }
-                alt={competition.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-2 text-white">
-                  {competition.title}
-                </h2>
-                <p className="text-gray-200 h-16 overflow-hidden">
-                  {competition.description}
-                </p>
-                <div className="mt-4 mb-6">
-                  <p className="flex items-center text-white text-sm">
-                    <FaCalendarAlt className="mr-1 text-white" size={16} />
+              {/* Image on the left side */}
+              <div className="w-1/3">
+                <img
+                  src={
+                    competition.image
+                      ? `https://solveandwins.advanceaitool.com/uploads/${competition.image}`
+                      : 'https://cdn.pixabay.com/photo/2024/01/17/12/06/car-8514314_640.png'
+                  }
+                  alt={competition.title}
+                  className="w-full h-full object-fill"
+                />
+              </div>
+
+              {/* Description and other details on the right side */}
+              <div className="w-2/3 p-6 flex flex-col justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold mb-2 text-white">
+                    {competition.title}
+                  </h2>
+                  <p className="text-gray-200 mb-4">
+                    {competition.description}
+                  </p>
+                </div>
+
+                {/* Start and End Dates */}
+                <div className="text-sm text-gray-300 mb-4">
+                  <p className="flex items-center">
+                    <FaCalendarAlt className="mr-1 text-gray-400" size={16} />
                     <strong className="mr-1">Start:</strong>
                     {new Date(competition.startedAt).toLocaleDateString()}
                   </p>
-                  <p className="flex items-center text-white text-sm">
-                    <FaCalendarAlt className="mr-1 text-white" size={16} />
+                  <p className="flex items-center">
+                    <FaCalendarAlt className="mr-1 text-gray-400" size={16} />
                     <strong className="mr-1">End:</strong>
                     {new Date(competition.endedAt).toLocaleDateString()}
                   </p>
                 </div>
-                <button
-                  onClick={() => handleStartCompetition(competition.id)}
-                  className="w-full bg-white/20 font-bold text-2xl text-white py-2 px-4 rounded-md hover:bg-white/30 transition-colors duration-200"
-                >
-                  Start Competition
-                </button>
+
+                {/* Button on the right side */}
+                <div className="self-end">
+                  <button
+                    onClick={() => handleStartCompetition(competition.id)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200"
+                  >
+                    Start Competition
+                  </button>
+                </div>
               </div>
             </div>
           ))}

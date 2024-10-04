@@ -9,6 +9,8 @@ export async function PUT(request, { params }) {
     const {
       title,
       description,
+      image,
+      status,
       startedAt,
       endedAt
     } = data;
@@ -20,11 +22,15 @@ export async function PUT(request, { params }) {
       data: {
         title,
         description,
+        image,
+        status,
         startedAt: new Date(startedAt), // Ensure date conversion
         endedAt: new Date(endedAt), // Ensure date conversion
         updatedAt: new Date(),
       },
     });
+
+    console.log("Updated Record",updatedCompetition);
 
     return NextResponse.json(updatedCompetition);
   } catch (error) {

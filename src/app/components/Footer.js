@@ -1,9 +1,37 @@
 import React from 'react';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+
 
 const Footer = () => {
   return (
     <footer className="bg-gray-800 py-12 text-gray-300">
-      <div className="container mx-auto px-6 md:flex md:justify-between">
+      <div className="container mx-auto px-6 flex flex-col md:flex-row gap-7 md:justify-between">
+      <div className="md:w-1/2 mb-8 md:mb-0">
+          <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
+          <p className="mb-4">
+            <strong>Email:</strong> support@solveandwin.com
+          </p>
+          <p className="mb-4">
+            <strong>Phone:</strong> +1 (800) 123-4567
+          </p>
+          <p className="mb-4">
+            <strong>Address:</strong> 123 Innovation Drive, Tech City, TX 75001
+          </p>
+          <div className="flex space-x-4 mt-6">
+            <a href="#" className="text-2xl hover:text-blue-500">
+              <FaFacebook />
+            </a>
+            <a href="#" className="text-2xl hover:text-blue-400">
+              <FaTwitter />
+            </a>
+            <a href="#" className="text-2xl hover:text-pink-500">
+              <FaInstagram />
+            </a>
+            <a href="#" className="text-2xl hover:text-blue-700">
+              <FaLinkedin />
+            </a>
+          </div>
+        </div>
         {/* Quick Links */}
         <div className="md:w-1/3 mb-8 md:mb-0">
           <h3 className="text-xl font-semibold mb-4">Quick Links</h3>

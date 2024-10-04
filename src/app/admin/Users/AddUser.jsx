@@ -70,6 +70,7 @@ const Users = () => {
     tiktok: "",
     whatsappNo: "",
     country: "",
+    status: "", // Added status field
   });
 
   useEffect(() => {
@@ -79,12 +80,13 @@ const Users = () => {
   const fetchAdminUsers = async () => {
     try {
       const response = await axios.get("/api/user");
+      console.log(response.data);
       setAdminUsers(response.data);
     } catch (error) {
       console.error("Error fetching admin users:", error);
       setSnackbar({
         open: true,
-        message: "Failed to fetch admin users.",
+        message: "Failed to fetch users.",
         type: "error",
       });
     }
@@ -107,6 +109,7 @@ const Users = () => {
       tiktok: "",
       whatsappNo: "",
       country: "",
+      status: "", // Reset status field
     });
     setOpenAddDialog(true);
   };
@@ -126,13 +129,14 @@ const Users = () => {
       fathername: user.fathername,
       education: user.education,
       institute: user.institute,
-      dob: user.dob,
+      dob: user.dob ? user.dob.split("T")[0] : "",
       city: user.city,
       province: user.province,
       fbProfile: user.fbProfile,
       tiktok: user.tiktok,
       whatsappNo: user.whatsappNo,
       country: user.country,
+      status: user.status || "", // Populate status field
     });
     setOpenEditDialog(true);
   };
@@ -153,9 +157,9 @@ const Users = () => {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullname, email, password, confirmPassword } = formData;
+    const { fullname, email, password, confirmPassword, status } = formData;
 
-    if (!fullname || !email || !password || !confirmPassword) {
+    if (!fullname || !email || !password || !confirmPassword || !status) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -177,16 +181,16 @@ const Users = () => {
       await axios.post("/api/user", formData);
       setSnackbar({
         open: true,
-        message: "Admin user added successfully.",
+        message: "User added successfully.",
         type: "success",
       });
       fetchAdminUsers();
       handleAddClose();
     } catch (error) {
-      console.error("Error adding admin user:", error);
+      console.error("Error adding user:", error);
       setSnackbar({
         open: true,
-        message: "Failed to add admin user.",
+        message: "Failed to add user.",
         type: "error",
       });
     }
@@ -195,9 +199,9 @@ const Users = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullname, email, password, confirmPassword } = formData;
+    const { fullname, email, password, confirmPassword, status } = formData;
 
-    if (!fullname || !email) {
+    if (!fullname || !email || !status) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -223,16 +227,16 @@ const Users = () => {
       await axios.put(`/api/user/${editingUser.id}`, updateData);
       setSnackbar({
         open: true,
-        message: "Admin user updated successfully.",
+        message: "User updated successfully.",
         type: "success",
       });
       fetchAdminUsers();
       handleEditClose();
     } catch (error) {
-      console.error("Error updating admin user:", error);
+      console.error("Error updating user:", error);
       setSnackbar({
         open: true,
-        message: "Failed to update admin user.",
+        message: "Failed to update user.",
         type: "error",
       });
     }
@@ -247,15 +251,15 @@ const Users = () => {
       await axios.delete(`/api/user/${deleteConfirmation.id}`);
       setSnackbar({
         open: true,
-        message: "Admin user deleted successfully.",
+        message: "User deleted successfully.",
         type: "warning",
       });
       fetchAdminUsers();
     } catch (error) {
-      console.error("Error deleting admin user:", error);
+      console.error("Error deleting user:", error);
       setSnackbar({
         open: true,
-        message: "Failed to delete admin user.",
+        message: "Failed to delete user.",
         type: "error",
       });
     } finally {
@@ -282,6 +286,10 @@ const Users = () => {
         accessor: "email",
       },
       {
+        Header: "Status",
+        accessor: "status", // Added status column
+      },
+      {
         Header: "Address",
         accessor: "address",
       },
@@ -297,11 +305,6 @@ const Users = () => {
         Header: "Institute",
         accessor: "institute",
       },
-      // {
-      //   Header: "Date of Birth",
-      //   accessor: "dob",
-      //   Cell: ({ value }) => new Date(value).toLocaleDateString(),
-      // },
       {
         Header: "City",
         accessor: "city",
@@ -379,7 +382,7 @@ const Users = () => {
           />
         </Toolbar>
         <Button variant="contained" color="primary" onClick={handleAddOpen}>
-          Add New Admin User
+          Add New User
         </Button>
       </div>
 
@@ -424,7 +427,7 @@ const Users = () => {
             {page.length === 0 && (
               <TableRow>
                 <TableCell colSpan={columns.length} align="center">
-                  No admin users found.
+                  No users found.
                 </TableCell>
               </TableRow>
             )}
@@ -448,7 +451,7 @@ const Users = () => {
         onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
       />
 
-      {/* Add Admin User Dialog */}
+      {/* Add User Dialog */}
       <Dialog
         open={openAddDialog}
         onClose={handleAddClose}
@@ -456,7 +459,7 @@ const Users = () => {
         fullWidth
       >
         <DialogTitle>
-          Add New Admin User
+          Add New User
           <IconButton
             aria-label="close"
             onClick={handleAddClose}
@@ -512,6 +515,19 @@ const Users = () => {
               required
               margin="normal"
             />
+            {/* Status Field */}
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel>Status</InputLabel>
+              <Select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+              >
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Active">Active</MenuItem>
+              </Select>
+            </FormControl>
+            {/* Other Fields */}
             <TextField
               label="Address"
               name="address"
@@ -614,7 +630,7 @@ const Users = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Admin User Dialog */}
+      {/* Edit User Dialog */}
       <Dialog
         open={openEditDialog}
         onClose={handleEditClose}
@@ -622,7 +638,7 @@ const Users = () => {
         fullWidth
       >
         <DialogTitle>
-          Edit Admin User
+          Edit User
           <IconButton
             aria-label="close"
             onClick={handleEditClose}
@@ -638,7 +654,7 @@ const Users = () => {
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleEditSubmit}>
-            {/* Add Fields for Editing */}
+            {/* Edit Fields */}
             <TextField
               label="Full Name"
               name="fullname"
@@ -678,6 +694,19 @@ const Users = () => {
               margin="normal"
               helperText="Leave blank to keep current password."
             />
+            {/* Status Field */}
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel>Status</InputLabel>
+              <Select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+              >
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Active">Active</MenuItem>
+              </Select>
+            </FormControl>
+            {/* Other Fields */}
             <TextField
               label="Address"
               name="address"
@@ -793,7 +822,7 @@ const Users = () => {
         <DialogContent>
           {deleteConfirmation.id && (
             <p>
-              Are you sure you want to delete the admin user with ID{" "}
+              Are you sure you want to delete the user with ID{" "}
               {deleteConfirmation.id}?
             </p>
           )}

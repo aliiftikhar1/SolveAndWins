@@ -63,12 +63,16 @@ const QuestionPage = () => {
           const questionsData = await questionsResponse.json();
           setQuestions(questionsData);
 
-          // Fetch previous results for the user in this competition
+          // Fetch previous results for the user
           const resultResponse = await fetch(`/api/results/${userId}`);
           if (resultResponse.ok) {
             const resultData = await resultResponse.json();
             if (resultData && resultData.length > 0) {
-              setPreviousResults(resultData);
+              // Filter results for the current competition
+              const filteredResults = resultData.filter(
+                (result) => result.competitionId === parseInt(id, 10)
+              );
+              setPreviousResults(filteredResults);
             }
           } else if (resultResponse.status !== 404) {
             throw new Error(`Error fetching results: ${resultResponse.status}`);

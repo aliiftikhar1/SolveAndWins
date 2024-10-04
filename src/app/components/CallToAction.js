@@ -10,7 +10,7 @@ const CallToAction = () => {
           Solveandwin. Don't miss out on the next big competition!
         </p>
         <a
-          href="#"
+          href="/UserLogin"
           className="px-8 py-4 bg-white text-blue-600 rounded-md text-lg font-semibold hover:bg-gray-100"
         >
           Sign Up Today

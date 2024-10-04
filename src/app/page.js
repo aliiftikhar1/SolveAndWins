@@ -11,8 +11,32 @@ import HowItWorks from './components/HowItWorks';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import UserLayout from './components/userlayout';
+import BlogSlider from './components/BlogSlider';
 
 export default function Home() {
+  const [blogs, setBlogs] = useState([]);
+
+  async function fetchBlogs() {
+    const response = await fetch('/api/blog');
+    if (!response.ok) {
+      throw new Error('Failed to fetch blogs');
+    }
+    const data = await response.json();
+    return data;
+  }
+
+  useEffect(() => {
+    async function loadBlogs() {
+      try {
+        const blogsData = await fetchBlogs();
+        setBlogs(blogsData);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      }
+    }
+    loadBlogs();
+  }, []);
+
 
   return (
     <>
@@ -23,9 +47,9 @@ export default function Home() {
     <RewardPrizes/>
     <Testimonials/>
     <CallToAction/>
-    <LatestNews/>
+    <BlogSlider blogs={blogs} />
     <FAQs/>
-    <ContactSection/>
+    {/* <ContactSection/> */}
     <Footer/>
     </UserLayout>
     </>

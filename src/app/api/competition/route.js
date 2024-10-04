@@ -8,6 +8,8 @@ export async function POST(request) {
     const { 
       title, 
       description, 
+      image,
+      status,
       startedAt, 
       endedAt 
     } = data;
@@ -17,6 +19,8 @@ export async function POST(request) {
       data: {
         title,
         description,
+        image,
+        status,
         startedAt: new Date(startedAt), // Ensure date conversion
         endedAt: new Date(endedAt), // Ensure date conversion
         createdAt: new Date(),

@@ -1,23 +1,29 @@
 "use client";
+
 import { useState, useEffect } from 'react';
 import {
   FaSignOutAlt,
   FaChevronDown,
+  FaUsers,
+  FaUserShield,
+  FaListAlt,
+  FaBlog,
+  FaTrophy,
+  FaGift,
+  FaQuestion,
   FaBuilding,
   FaTags,
-  FaBlog,
-  FaCog,
-  FaQuestionCircle,
   FaPercent,
   FaTicketAlt,
   FaInbox,
   FaFolderOpen,
-  FaUser,
+  FaCog,
+  FaQuestionCircle,
 } from 'react-icons/fa';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode'; // Corrected import
+import {jwtDecode} from 'jwt-decode'; // Corrected import
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Import Next.js Link component for smooth transitions
+import Link from 'next/link';
 
 const Sidebar = () => {
   const [userName, setUserName] = useState('');
@@ -44,19 +50,25 @@ const Sidebar = () => {
       alert('Login to see the dashboard!');
       router.push('/admin');
     } else {
-      const decodedToken = jwtDecode(token);
-      setUserName(decodedToken.name);
-      setUserEmail(decodedToken.email);
-      setUserRole(decodedToken.role);
-      console.log("---DECODED----");
-      console.log(
-        "Name",
-        decodedToken.name,
-        "email",
-        decodedToken.email,
-        "Role",
-        decodedToken.role
-      );
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserName(decodedToken.name);
+        setUserEmail(decodedToken.email);
+        setUserRole(decodedToken.role);
+        console.log("---DECODED----");
+        console.log(
+          "Name",
+          decodedToken.name,
+          "email",
+          decodedToken.email,
+          "Role",
+          decodedToken.role
+        );
+      } catch (error) {
+        console.error("Invalid token:", error);
+        alert('Invalid token. Please log in again.');
+        router.push('/admin');
+      }
     }
   }, [router]);
 
@@ -64,31 +76,51 @@ const Sidebar = () => {
     console.log("userName has been updated:", userName);
   }, [userName]);
 
-  // Define menu items with roles
+  // Define menu items with roles and appropriate icons
   const menuItems = [
     {
       title: "Users",
       path: "/admin/Users",
-      icon: <FaUser className="h-5 w-5" />,
+      icon: <FaUsers className="h-5 w-5" />,
       roles: ["admin"], // Only admin can see this
-    },{
+    },
+    {
       title: "Admin Users",
       path: "/admin/AdminUser",
-      icon: <FaUser className="h-5 w-5" />,
+      icon: <FaUserShield className="h-5 w-5" />,
+      roles: ["admin"], // Only admin can see this
+    },
+    {
+      title: "Blog Category",
+      path: "/admin/BlogCategory",
+      icon: <FaListAlt className="h-5 w-5" />,
+      roles: ["admin"], // Only admin can see this
+    },
+    {
+      title: "Blogs",
+      path: "/admin/Blogs",
+      icon: <FaBlog className="h-5 w-5" />,
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Competitions",
       path: "/admin/Competition",
-      icon: <FaUser className="h-5 w-5" />,
+      icon: <FaTrophy className="h-5 w-5" />,
+      roles: ["admin"], // Only admin can see this
+    },
+    {
+      title: "Prizes",
+      path: "/admin/Prize",
+      icon: <FaGift className="h-5 w-5" />,
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Questions",
       path: "/admin/Questions",
-      icon: <FaUser className="h-5 w-5" />,
+      icon: <FaQuestion className="h-5 w-5" />,
       roles: ["admin"], // Only admin can see this
     },
+    // Uncomment and update icons as needed
     // {
     //   title: "Companies",
     //   path: "/admin/Companies",
@@ -126,12 +158,6 @@ const Sidebar = () => {
     //   roles: ["admin", "sub admin"],
     // },
     // {
-    //   title: "Blogs",
-    //   path: "/admin/Blogs",
-    //   icon: <FaBlog className="h-5 w-5" />,
-    //   roles: ["admin", "sub admin"],
-    // },
-    // {
     //   title: "FAQ's",
     //   path: "/admin/Faqs",
     //   icon: <FaQuestionCircle className="h-5 w-5" />,
@@ -139,18 +165,20 @@ const Sidebar = () => {
     // },
   ];
 
-  // Define dropdown menu items with roles
+  // Define dropdown menu items with roles and appropriate icons
   const dropdownMenuItems = [
+    // Example Dropdown
     // {
-    //   title: "CouponRI",
-    //   roles: ["admin"], 
+    //   title: "Settings",
+    //   roles: ["admin"],
     //   list: [
     //     {
-    //       title: "Settings",
-    //       path: "/dashboard/settings",
-    //       icon: <FaCog />,
+    //       title: "Profile Settings",
+    //       path: "/admin/settings/profile",
+    //       icon: <FaCog className="h-4 w-4" />,
     //       roles: ["admin"],
     //     },
+    //     // Add more dropdown items as needed
     //   ],
     // },
   ];
@@ -162,7 +190,7 @@ const Sidebar = () => {
         <img
           src="/logo/logo.jpg"
           alt="Profile"
-          className="rounded-full mx-auto mb-4 w-24 h-24"
+          className="rounded-full mx-auto mb-4 w-24 h-24 object-cover"
         />
         <h2 className="text-xl font-semibold">{userName}</h2>
         <p className="text-green-400 mt-1">● Online</p>
@@ -177,7 +205,10 @@ const Sidebar = () => {
               item.roles.includes(userRole) && (
                 <li key={item.title}>
                   <Link href={item.path} passHref>
-                    <button className="flex items-center p-3 hover:bg-blue-700 rounded-md w-full">
+                    <button
+                      className="flex items-center p-3 hover:bg-blue-700 rounded-md w-full text-left"
+                      aria-label={item.title}
+                    >
                       {item.icon}
                       <span className="ml-3 text-sm font-medium">
                         {item.title}
@@ -196,14 +227,22 @@ const Sidebar = () => {
                   <button
                     className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none"
                     onClick={() => toggleDropdown(index)}
+                    aria-haspopup="true"
+                    aria-expanded={isDropdownOpen[index] ? 'true' : 'false'}
                   >
-                    <span className="ml-3 text-sm font-medium">
+                    {category.icon && (
+                      <span className="mr-3">
+                        {category.icon}
+                      </span>
+                    )}
+                    <span className="text-sm font-medium">
                       {category.title}
                     </span>
                     <FaChevronDown
                       className={`h-4 w-4 ml-auto transform transition-transform duration-200 ${
                         isDropdownOpen[index] ? 'rotate-180' : ''
                       }`}
+                      aria-hidden="true"
                     />
                   </button>
                   {isDropdownOpen[index] && (
@@ -213,7 +252,10 @@ const Sidebar = () => {
                           item.roles.includes(userRole) && (
                             <li key={item.title}>
                               <Link href={item.path} passHref>
-                                <button className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full">
+                                <button
+                                  className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full text-left"
+                                  aria-label={item.title}
+                                >
                                   {item.icon}
                                   <span className="ml-3 text-sm font-medium">
                                     {item.title}
@@ -232,8 +274,9 @@ const Sidebar = () => {
           {/* Logout Button */}
           <li className="mt-6">
             <button
-              className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none"
+              className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none text-left"
               onClick={handleLogout}
+              aria-label="Logout"
             >
               <FaSignOutAlt className="h-5 w-5" />
               <span className="ml-3 text-sm font-medium">Logout</span>

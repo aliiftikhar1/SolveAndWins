@@ -54,6 +54,9 @@ export default function Header() {
           <a href="/pages/categories" className="hover:text-blue-700">
             About Us
           </a>
+          <a href="/pages/blog" className="hover:text-blue-700">
+            Blogs
+          </a>
           <a href="/pages/stores" className="hover:text-blue-700">
             Contact Us
           </a>
