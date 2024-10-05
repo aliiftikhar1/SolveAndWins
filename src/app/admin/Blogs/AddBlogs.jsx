@@ -584,37 +584,31 @@ const AddBlogs = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>Categories</InputLabel>
-                  <Select
-                    name="category"
-                    multiple
-                    value={Array.isArray(formData.category) ? formData.category : []}
-                    onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        category: e.target.value, // Ensure it's an array
-                      });
-                    }}
-                    label="Categories"
-                    renderValue={(selected) => {
-                      if (Array.isArray(selected)) {
-                        return selected.join(", ");
-                      }
-                      return ""; // Fallback for empty or invalid selection
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>Select Categories</em>
-                    </MenuItem>
-                    {blogCategories.map((cat) => (
-                      <MenuItem key={cat.id} value={cat.title}>
-                        {cat.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+  <FormControl fullWidth variant="outlined">
+    <InputLabel>Category</InputLabel>
+    <Select
+      name="category"
+      value={formData.category || ""} // Ensure it's a string now
+      onChange={(e) => {
+        setFormData({
+          ...formData,
+          category: e.target.value, // Store as a single value
+        });
+      }}
+      label="Category"
+    >
+      <MenuItem value="">
+        <em>Select a Category</em>
+      </MenuItem>
+      {blogCategories.map((cat) => (
+        <MenuItem key={cat.id} value={cat.title}>
+          {cat.title}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
+
 
               <Grid item xs={12}>
                 <TextField
@@ -758,37 +752,30 @@ const AddBlogs = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel>Categories</InputLabel>
-                    <Select
-                      name="category"
-                      multiple
-                      value={Array.isArray(editingBlog?.category) ? editingBlog.category : []}
-                      onChange={(e) => {
-                        setEditingBlog({
-                          ...editingBlog,
-                          category: e.target.value, // Ensure it's an array
-                        });
-                      }}
-                      label="Categories"
-                      renderValue={(selected) => {
-                        if (Array.isArray(selected)) {
-                          return selected.join(", ");
-                        }
-                        return ""; // Fallback for empty or invalid selection
-                      }}
-                    >
-                      <MenuItem value="">
-                        <em>Select Categories</em>
-                      </MenuItem>
-                      {blogCategories.map((cat) => (
-                        <MenuItem key={cat.id} value={cat.title}>
-                          {cat.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+  <FormControl fullWidth variant="outlined">
+    <InputLabel>Category</InputLabel>
+    <Select
+      name="category"
+      value={editingBlog?.category || ""} // Ensure it's a string now
+      onChange={(e) => {
+        setEditingBlog({
+          ...editingBlog,
+          category: e.target.value, // Store as a single value
+        });
+      }}
+      label="Category"
+    >
+      <MenuItem value="">
+        <em>Select a Category</em>
+      </MenuItem>
+      {blogCategories.map((cat) => (
+        <MenuItem key={cat.id} value={cat.title}>
+          {cat.title}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+</Grid>
 
                 <Grid item xs={12}>
                   <TextField
