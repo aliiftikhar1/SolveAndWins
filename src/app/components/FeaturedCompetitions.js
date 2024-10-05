@@ -96,38 +96,39 @@ const FeaturedCompetitions = () => {
 
         {/* Competitions Grid */}
         {!loading && !error && competitions.length > 0 && (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {competitions.map((comp, index) => (
-              <a href="/pages/competitions">
-              <div
-                key={index}
-                className="bg-gray-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-              >
-                {comp.image && (
-                  <img
-                  src={`https://solveandwins.advanceaitool.com/uploads/${comp.image}`}
-                    alt={comp.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{comp.title}</h3>
-                  <p className="text-gray-700 mb-4">{comp.description}</p>
-                  <p className="font-semibold mb-2">{comp.reward}</p>
-                  <p className="text-blue-600 mb-4">{comp.countdown}</p>
-                  <a
-                    href={comp.link}
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300"
-                  >
-                    Participate Now
-                  </a>
+              <a href="/pages/competitions" key={index}>
+                <div
+                  className="bg-gray-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 min-h-[400px] flex flex-col"
+                >
+                  {comp.image && (
+                    <img
+                      src={`https://solveandwins.advanceaitool.com/uploads/${comp.image}`}
+                      alt={comp.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  )}
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">{comp.title}</h3>
+                      <p className="text-gray-700 mb-4">{comp.description}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold mb-2">{comp.reward}</p>
+                      <p className="text-blue-600 mb-4">{comp.countdown}</p>
+                      <a
+                        href={comp.link}
+                        className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300"
+                      >
+                        Participate Now
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
               </a>
             ))}
-            
           </div>
-          
         )}
 
         {/* No Competitions Found */}
