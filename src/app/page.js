@@ -50,7 +50,6 @@ export default function Home() {
     <BlogSlider blogs={blogs} />
     <FAQs/>
     {/* <ContactSection/> */}
-    <Footer/>
     </UserLayout>
     </>
   );
