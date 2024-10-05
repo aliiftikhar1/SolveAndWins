@@ -60,8 +60,8 @@ const RewardsPrizes = () => {
                     alt={prize.title}
                     className="mx-auto mb-4 h-40 w-40 object-cover rounded-full shadow-md"
                   />
-                  <h3 className="text-2xl font-bold text-white mb-2">{prize.title}</h3>
-                  <p className="text-gray-300 mb-4 text-center">{prize.description}</p>
+                  <h3 className="text-2xl font-bold text-black mb-2">{prize.title}</h3>
+                  <p className="text-gray-800 mb-4 text-center">{prize.description}</p>
                 </div>
               </div>
             ))
