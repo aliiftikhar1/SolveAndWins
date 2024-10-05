@@ -19,6 +19,8 @@ import {
   FaFolderOpen,
   FaCog,
   FaQuestionCircle,
+  FaSpeakerDeck,
+  FaBell,
 } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode'; // Corrected import
@@ -106,6 +108,12 @@ const Sidebar = () => {
       title: "Competitions",
       path: "/admin/Competition",
       icon: <FaTrophy className="h-5 w-5" />,
+      roles: ["admin"], // Only admin can see this
+    },
+    {
+      title: "Results",
+      path: "/admin/Results",
+      icon: <FaBell className="h-5 w-5" />,
       roles: ["admin"], // Only admin can see this
     },
     {
