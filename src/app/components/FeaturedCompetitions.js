@@ -106,7 +106,7 @@ const FeaturedCompetitions = () => {
                     <img
                       src={`https://solveandwins.advanceaitool.com/uploads/${comp.image}`}
                       alt={comp.title}
-                      className="w-full h-48 object-contain"
+                      className="w-full h-48 object-fill"
                     />
                   )}
                   <div className="p-6 flex-1 flex flex-col justify-between">

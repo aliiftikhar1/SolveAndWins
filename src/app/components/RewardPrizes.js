@@ -40,7 +40,7 @@ const RewardsPrizes = () => {
         </p>
 
         {/* Prizes Container */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="flex flex-wrap justify-center gap-8">
           {/* Loading State */}
           {isLoading ? (
             <p className="text-center w-full text-lg text-gray-500">Loading prizes...</p>
@@ -52,15 +52,17 @@ const RewardsPrizes = () => {
             prizes.map((prize) => (
               <div
                 key={prize.id || prize.title}
-                className="bg-white shadow-lg rounded-lg p-6 transition transform hover:scale-105 hover:shadow-2xl"
+                className="relative w-full sm:w-1/2 lg:w-1/4 px-4"
               >
-                <img
-                  src={`https://solveandwins.advanceaitool.com/uploads/${prize.image}`}
-                  alt={prize.title}
-                  className="mx-auto mb-4 h-48 w-48 object-cover rounded-full shadow-md"
-                />
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{prize.title}</h3>
-                <p className="text-gray-700 mb-4">{prize.description}</p>
+                <div className="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg shadow-lg p-6 transition transform hover:scale-105 hover:shadow-2xl flex flex-col items-center">
+                  <img
+                    src={`https://solveandwins.advanceaitool.com/uploads/${prize.image}`}
+                    alt={prize.title}
+                    className="mx-auto mb-4 h-40 w-40 object-cover rounded-full shadow-md"
+                  />
+                  <h3 className="text-2xl font-bold text-white mb-2">{prize.title}</h3>
+                  <p className="text-gray-300 mb-4 text-center">{prize.description}</p>
+                </div>
               </div>
             ))
           ) : (
