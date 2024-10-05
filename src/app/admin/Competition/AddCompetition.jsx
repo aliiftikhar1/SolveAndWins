@@ -671,8 +671,9 @@ const Competitions = () => {
                 native: true,
               }}
             >
-              <option value="visible">Visible</option>
+            <option value="visible">Visible</option>
               <option value="hide">Hide</option>
+              <option value="featured">Featured</option>
             </TextField>
             {/* Image Upload */}
             <div style={{ marginTop: "16px" }}>
