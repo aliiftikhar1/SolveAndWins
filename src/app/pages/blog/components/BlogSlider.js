@@ -76,7 +76,7 @@ export default function BlogCategorySlider({ category, blogs }) {
               <div key={index} className="flex items-center space-x-4">
                 <div className="w-1/3">
                   <img
-                    src={`https://m3xtrader.com/coupon/uploads/${blog.image}`}
+                    src={`https://solveandwins.advanceaitool.com/uploads/${blog.image}`}
                     alt={blog.title}
                     className="w-full h-20 sm:h-24 object-cover rounded-lg"
                   />
