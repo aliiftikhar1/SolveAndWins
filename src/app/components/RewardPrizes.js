@@ -26,25 +26,24 @@ const RewardsPrizes = () => {
   }, []);
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-gradient-to-r from-blue-50 to-blue-100 py-16">
       <div className="container mx-auto px-6">
         {/* Section Title */}
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-900">
           Rewards and Prizes
         </h2>
 
         {/* Section Description */}
-        <p className="text-center text-gray-700 max-w-2xl mx-auto mb-12">
-          At <strong>Solveandwin</strong>, we believe in rewarding talent and
-          effort. Our competitions offer a variety of prizes to motivate and
-          acknowledge our top performers.
+        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
+          At <strong>Solveandwin</strong>, we believe in rewarding talent and effort.
+          Our competitions offer a variety of prizes to motivate and acknowledge our top performers.
         </p>
 
         {/* Prizes Container */}
-        <div className="flex flex-wrap justify-center gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {/* Loading State */}
           {isLoading ? (
-            <p className="text-center w-full">Loading prizes...</p>
+            <p className="text-center w-full text-lg text-gray-500">Loading prizes...</p>
           ) : error ? (
             /* Error State */
             <p className="text-center w-full text-red-500">{error}</p>
@@ -53,31 +52,30 @@ const RewardsPrizes = () => {
             prizes.map((prize) => (
               <div
                 key={prize.id || prize.title}
-                className="text-center w-full sm:w-1/2 lg:w-1/4 px-4"
+                className="bg-white shadow-lg rounded-lg p-6 transition transform hover:scale-105 hover:shadow-2xl"
               >
                 <img
                   src={`https://solveandwins.advanceaitool.com/uploads/${prize.image}`}
                   alt={prize.title}
-                  className="mx-auto mb-4 h-40 w-40 object-cover rounded-full"
+                  className="mx-auto mb-4 h-48 w-48 object-cover rounded-full shadow-md"
                 />
-                <h3 className="text-xl font-semibold mb-2">{prize.title}</h3>
-                <p className="text-gray-700">{prize.description}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{prize.title}</h3>
+                <p className="text-gray-700 mb-4">{prize.description}</p>
               </div>
             ))
           ) : (
             /* No Prizes Available */
-            <p className="text-center w-full">No prizes available at the moment.</p>
+            <p className="text-center w-full text-gray-600">No prizes available at the moment.</p>
           )}
         </div>
 
         {/* Testimonial Section */}
         <div className="mt-16">
-          <blockquote className="text-center text-xl italic text-gray-800 max-w-3xl mx-auto">
-            "Winning the grand prize in the Math Mastery Marathon was an
-            incredible experience! The challenges were engaging, and the rewards
-            were fantastic."
+          <blockquote className="text-center text-2xl italic text-gray-800 max-w-3xl mx-auto">
+            "Winning the grand prize in the Math Mastery Marathon was an incredible experience! 
+            The challenges were engaging, and the rewards were fantastic."
             <br />
-            <span className="font-semibold mt-4 block">
+            <span className="font-semibold mt-4 block text-lg">
               — Alex Johnson, Competition Winner
             </span>
           </blockquote>
