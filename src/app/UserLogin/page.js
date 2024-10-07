@@ -25,8 +25,8 @@ const UserLoginForm = () => {
     dob: '',
     city: '',
     province: '',
-    fbProfile: '',
-    tiktok: '',
+    // fbProfile: '',
+    // tiktok: '',
     whatsappNo: '',
     country: '',
   });
@@ -85,8 +85,8 @@ const UserLoginForm = () => {
         dob: formData.dob,
         city: formData.city,
         province: formData.province,
-        fbProfile: formData.fbProfile,
-        tiktok: formData.tiktok,
+        // fbProfile: formData.fbProfile,
+        // tiktok: formData.tiktok,
         whatsappNo: formData.whatsappNo,
         country: formData.country,
       }),
@@ -110,7 +110,7 @@ const UserLoginForm = () => {
     <div className="min-h-screen py-8 flex items-center justify-center bg-gradient-to-r from-blue-900 via-blue-500 to-yellow-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
         <div className="flex justify-center flex-col items-center mb-6">
-          <h1 className="text-5xl text-center font-bold">SolveAndWins</h1>
+          <h1 className="text-5xl text-center font-bold">Solve And Wins</h1>
           <h2 className="text-2xl font-bold mt-4">
             {isLogin ? 'User Login' : 'User Registration'}
           </h2>
@@ -119,7 +119,7 @@ const UserLoginForm = () => {
         {isLogin ? (
           // Login Form
           <form onSubmit={handleLoginSubmit}>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 mb-8">
               <div className="">
                 <label className="block text-gray-700">Email Address</label>
                 <input
@@ -143,11 +143,11 @@ const UserLoginForm = () => {
                 />
               </div>
             </div>
-            <div className=" text-right">
+            {/* <div className=" text-right">
               <a href="#" className="text-blue-500 hover:underline">
                 Forgot password?
               </a>
-            </div>
+            </div> */}
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -169,7 +169,7 @@ const UserLoginForm = () => {
         ) : (
           // Registration Form
           <form onSubmit={handleRegisterSubmit}>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mb-8">
               {/* Full Name */}
               <div className="">
                 <label className="block text-gray-700">Full Name</label>
@@ -194,6 +194,18 @@ const UserLoginForm = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
+                />
+              </div>
+               {/* WhatsApp Number */}
+               <div className=" col-span-2">
+                <label className="block text-gray-700">WhatsApp Number</label>
+                <input
+                  type="tel"
+                  name="whatsappNo"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="WhatsApp Number"
+                  value={formData.whatsappNo}
+                  onChange={handleInputChange}
                 />
               </div>
               {/* Password */}
@@ -281,6 +293,30 @@ const UserLoginForm = () => {
                   onChange={handleInputChange}
                 />
               </div>
+               {/* Country */}
+               <div className="">
+                <label className="block text-gray-700">Country</label>
+                <input
+                  type="text"
+                  name="country"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Country"
+                  value={formData.country}
+                  onChange={handleInputChange}
+                />
+              </div>
+                {/* Province */}
+                <div className="">
+                <label className="block text-gray-700">Province</label>
+                <input
+                  type="text"
+                  name="province"
+                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Province"
+                  value={formData.province}
+                  onChange={handleInputChange}
+                />
+              </div>
               {/* City */}
               <div className="">
                 <label className="block text-gray-700">City</label>
@@ -293,32 +329,9 @@ const UserLoginForm = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              {/* Province */}
-              <div className="">
-                <label className="block text-gray-700">Province</label>
-                <input
-                  type="text"
-                  name="province"
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Province"
-                  value={formData.province}
-                  onChange={handleInputChange}
-                />
-              </div>
-              {/* Country */}
-              <div className="">
-                <label className="block text-gray-700">Country</label>
-                <input
-                  type="text"
-                  name="country"
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Country"
-                  value={formData.country}
-                  onChange={handleInputChange}
-                />
-              </div>
+             
               {/* Facebook Profile */}
-              <div className=" col-span-2">
+              {/* <div className=" col-span-2">
                 <label className="block text-gray-700">Facebook Profile</label>
                 <input
                   type="url"
@@ -328,9 +341,9 @@ const UserLoginForm = () => {
                   value={formData.fbProfile}
                   onChange={handleInputChange}
                 />
-              </div>
+              </div> */}
               {/* TikTok */}
-              <div className=" col-span-2">
+              {/* <div className=" col-span-2">
                 <label className="block text-gray-700">TikTok</label>
                 <input
                   type="text"
@@ -340,19 +353,8 @@ const UserLoginForm = () => {
                   value={formData.tiktok}
                   onChange={handleInputChange}
                 />
-              </div>
-              {/* WhatsApp Number */}
-              <div className=" col-span-2">
-                <label className="block text-gray-700">WhatsApp Number</label>
-                <input
-                  type="tel"
-                  name="whatsappNo"
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="WhatsApp Number"
-                  value={formData.whatsappNo}
-                  onChange={handleInputChange}
-                />
-              </div>
+              </div> */}
+             
             </div>
             <button
               type="submit"

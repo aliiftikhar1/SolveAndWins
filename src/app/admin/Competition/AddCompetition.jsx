@@ -29,10 +29,10 @@ import {
   useSortBy,
   usePagination,
 } from "react-table";
+
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import CloseIcon from "@mui/icons-material/Close";
-
 import axios from "axios";
 
 const Competitions = () => {
@@ -56,8 +56,10 @@ const Competitions = () => {
     description: "",
     startedAt: "",
     endedAt: "",
+    duration: "", // New field for duration
     image: null, // Image file
     status: "visible", // Default status
+    start: "No", // Default value for start
   });
 
   // Fetch Competitions on Mount
@@ -87,8 +89,10 @@ const Competitions = () => {
       description: "",
       startedAt: "",
       endedAt: "",
+      duration: "", // Reset duration
       image: null, // Reset image
       status: "visible", // Default status
+      start: "No", // Default value for start
     });
     setOpenAddDialog(true);
   };
@@ -100,22 +104,23 @@ const Competitions = () => {
 
   // Handle Opening Edit Dialog
   const handleEditOpen = (competition) => {
-    // Format dates to YYYY-MM-DD
-    const formattedStartDate = new Date(competition.startedAt)
-      .toISOString()
-      .split("T")[0];
-    const formattedEndDate = new Date(competition.endedAt)
-      .toISOString()
-      .split("T")[0];
+    const formattedStartDate = competition.startedAt
+      ? new Date(competition.startedAt).toISOString().split("T")[0]
+      : "";
+    const formattedEndDate = competition.endedAt
+      ? new Date(competition.endedAt).toISOString().split("T")[0]
+      : "";
 
     setEditingCompetition(competition);
     setFormData({
-      title: competition.title,
-      description: competition.description,
+      title: competition.title || "",
+      description: competition.description || "",
       startedAt: formattedStartDate,
       endedAt: formattedEndDate,
+      duration: competition.duration ? competition.duration.toString() : "",
       image: null, // Reset image
-      status: competition.status || "visible", // Existing status
+      status: competition.status || "visible",
+      start: competition.start || "No", // Use existing start value or default to "No"
     });
     setOpenEditDialog(true);
   };
@@ -163,10 +168,27 @@ const Competitions = () => {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, description, startedAt, endedAt, image, status } = formData;
+    const {
+      title,
+      description,
+      startedAt,
+      endedAt,
+      duration,
+      image,
+      status,
+      start,
+    } = formData;
 
     // Validation
-    if (!title || !description || !startedAt || !endedAt || !status) {
+    if (
+      !title ||
+      !description ||
+      !startedAt ||
+      !endedAt ||
+      !status ||
+      !duration ||
+      !start
+    ) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -187,8 +209,10 @@ const Competitions = () => {
         description,
         startedAt,
         endedAt,
-        image: imageUrl, // Image URL
-        status, // Status
+        duration: parseInt(duration),
+        image: imageUrl,
+        status,
+        start, // Include start
       };
 
       await axios.post("/api/competition", competitionData);
@@ -213,10 +237,27 @@ const Competitions = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, description, startedAt, endedAt, image, status } = formData;
+    const {
+      title,
+      description,
+      startedAt,
+      endedAt,
+      duration,
+      image,
+      status,
+      start,
+    } = formData;
 
     // Validation
-    if (!title || !description || !startedAt || !endedAt || !status) {
+    if (
+      !title ||
+      !description ||
+      !startedAt ||
+      !endedAt ||
+      !status ||
+      !duration ||
+      !start
+    ) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -228,7 +269,6 @@ const Competitions = () => {
     try {
       let imageUrl = editingCompetition.image; // Existing image URL
       if (image) {
-        // If new image is uploaded
         const base64Image = await convertToBase64(image);
         imageUrl = await uploadImage(base64Image);
       }
@@ -238,8 +278,10 @@ const Competitions = () => {
         description,
         startedAt,
         endedAt,
-        image: imageUrl, // Updated image URL
-        status, // Updated status
+        duration: parseInt(duration),
+        image: imageUrl,
+        status,
+        start, // Include start
       };
 
       await axios.put(
@@ -313,16 +355,24 @@ const Competitions = () => {
       {
         Header: "Started At",
         accessor: "startedAt",
-        Cell: ({ value }) => new Date(value).toLocaleDateString(),
+        Cell: ({ value }) => (value ? new Date(value).toLocaleDateString() : ""),
       },
       {
         Header: "Ended At",
         accessor: "endedAt",
-        Cell: ({ value }) => new Date(value).toLocaleDateString(),
+        Cell: ({ value }) => (value ? new Date(value).toLocaleDateString() : ""),
+      },
+      {
+        Header: "Duration (minutes)",
+        accessor: "duration",
       },
       {
         Header: "Status",
         accessor: "status",
+      },
+      {
+        Header: "Start", // New column for start
+        accessor: "start",
       },
       {
         Header: "Image",
@@ -425,16 +475,10 @@ const Competitions = () => {
                 {headerGroup.headers.map((column) => (
                   <TableCell
                     key={column.id}
-                    {...column.getHeaderProps(
-                      column.getSortByToggleProps()
-                    )}
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
                   >
                     {column.render("Header")}
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
+                    {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                   </TableCell>
                 ))}
               </TableRow>
@@ -478,13 +522,16 @@ const Competitions = () => {
         rowsPerPage={pageSize}
         page={pageIndex}
         onPageChange={(event, newPage) => gotoPage(newPage)}
-        onRowsPerPageChange={(event) =>
-          setPageSize(Number(event.target.value))
-        }
+        onRowsPerPageChange={(event) => setPageSize(Number(event.target.value))}
       />
 
       {/* Add Competition Dialog */}
-      <Dialog open={openAddDialog} onClose={handleAddClose} maxWidth="md" fullWidth>
+      <Dialog
+        open={openAddDialog}
+        onClose={handleAddClose}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>
           Add New Competition
           <IconButton
@@ -548,6 +595,17 @@ const Competitions = () => {
               margin="normal"
               InputLabelProps={{ shrink: true }}
             />
+            {/* Duration Field */}
+            <TextField
+              label="Duration (in minutes)"
+              name="duration"
+              value={formData.duration}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              margin="normal"
+              type="number"
+            />
             {/* Status Selector */}
             <TextField
               select
@@ -565,6 +623,23 @@ const Competitions = () => {
               <option value="visible">Visible</option>
               <option value="hide">Hide</option>
               <option value="featured">Featured</option>
+            </TextField>
+            {/* Start Selector */}
+            <TextField
+              select
+              label="Start"
+              name="start"
+              value={formData.start}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              margin="normal"
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </TextField>
             {/* Image Upload */}
             <div style={{ marginTop: "16px" }}>
@@ -593,7 +668,12 @@ const Competitions = () => {
       </Dialog>
 
       {/* Edit Competition Dialog */}
-      <Dialog open={openEditDialog} onClose={handleEditClose} maxWidth="md" fullWidth>
+      <Dialog
+        open={openEditDialog}
+        onClose={handleEditClose}
+        maxWidth="md"
+        fullWidth
+      >
         <DialogTitle>
           Edit Competition
           <IconButton
@@ -657,6 +737,17 @@ const Competitions = () => {
               margin="normal"
               InputLabelProps={{ shrink: true }}
             />
+            {/* Duration Field */}
+            <TextField
+              label="Duration (in minutes)"
+              name="duration"
+              value={formData.duration}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              margin="normal"
+              type="number"
+            />
             {/* Status Selector */}
             <TextField
               select
@@ -671,9 +762,26 @@ const Competitions = () => {
                 native: true,
               }}
             >
-            <option value="visible">Visible</option>
+              <option value="visible">Visible</option>
               <option value="hide">Hide</option>
               <option value="featured">Featured</option>
+            </TextField>
+            {/* Start Selector */}
+            <TextField
+              select
+              label="Start"
+              name="start"
+              value={formData.start}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              margin="normal"
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </TextField>
             {/* Image Upload */}
             <div style={{ marginTop: "16px" }}>

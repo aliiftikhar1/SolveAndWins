@@ -10,7 +10,9 @@ export async function PUT(request, { params }) {
       title,
       description,
       image,
+      start,
       status,
+      duration,
       startedAt,
       endedAt
     } = data;
@@ -24,6 +26,8 @@ export async function PUT(request, { params }) {
         description,
         image,
         status,
+        start,
+        duration,
         startedAt: new Date(startedAt), // Ensure date conversion
         endedAt: new Date(endedAt), // Ensure date conversion
         updatedAt: new Date(),
@@ -59,7 +63,12 @@ export async function GET(request, { params }) {
   const { id } = params;
   try {
     const competition = await prisma.competition.findUnique({
-      where: { id: parseInt(id, 10) },
+      where: { id: parseInt(id) },
+      include: {
+        questions: true,
+        participants: true,
+        results: true,
+      },
     });
 
     console.log("Competition:", competition);

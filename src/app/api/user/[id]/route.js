@@ -32,7 +32,9 @@ export async function PUT(request, { params }) {
     }
 
     const body = await request.json();
-    const { fullname, email, password, status,address, fathername, education, institute, dob, city, province, fbProfile, tiktok, whatsappNo, country } = body;
+    const { fullname, email, password, status,address,image, fathername, education, institute, dob, city, province,
+      //  fbProfile, tiktok,
+        whatsappNo, country } = body;
 
     const User = await prisma.User.findUnique({ where: { id } });
     if (!User) {
@@ -58,11 +60,12 @@ export async function PUT(request, { params }) {
         status,
         education,
         institute,
-        dob: new Date(dob), // Ensure dob is stored as a Date object
+        dob: new Date(dob), 
         city,
         province,
-        fbProfile,
-        tiktok,
+        // fbProfile,
+        // tiktok,
+        image,
         whatsappNo,
         country,
         updatedAt: new Date(),

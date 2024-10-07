@@ -105,6 +105,12 @@ const Sidebar = () => {
       roles: ["admin"], // Only admin can see this
     },
     {
+      title: "Reviews",
+      path: "/admin/Reviews",
+      icon: <FaBlog className="h-5 w-5" />,
+      roles: ["admin"], // Only admin can see this
+    },
+    {
       title: "Competitions",
       path: "/admin/Competition",
       icon: <FaTrophy className="h-5 w-5" />,
@@ -125,6 +131,12 @@ const Sidebar = () => {
     {
       title: "Questions",
       path: "/admin/Questions",
+      icon: <FaQuestion className="h-5 w-5" />,
+      roles: ["admin"], // Only admin can see this
+    },
+    {
+      title: "Dummy Questions",
+      path: "/admin/DummyQuestions",
       icon: <FaQuestion className="h-5 w-5" />,
       roles: ["admin"], // Only admin can see this
     },
@@ -195,11 +207,14 @@ const Sidebar = () => {
     <div className="bg-gray-700 text-white w-full min-h-screen flex flex-col">
       {/* Profile Section */}
       <div className="p-6 text-center">
-        <img
+        {/* <img
           src="/logo/logo.jpg"
           alt="Profile"
           className="rounded-full mx-auto mb-4 w-24 h-24 object-cover"
-        />
+        /> */}
+        <h1 className='text-3xl font-extrabold'>
+          SolveAndWins
+        </h1>
         <h2 className="text-xl font-semibold">{userName}</h2>
         <p className="text-green-400 mt-1">● Online</p>
       </div>

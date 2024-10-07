@@ -22,7 +22,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center space-x-6">
-        <div className="flex items-center bg-white p-1 rounded-lg h-10">
+        {/* <div className="flex items-center bg-white p-1 rounded-lg h-10">
           <MdSearch className="text-black" />
           <input
             type="text"
@@ -38,7 +38,7 @@ const Navbar = () => {
         </div>
         <div className="relative text-white mr-4">
           <MdPublic size={28} />
-        </div>
+        </div> */}
       </div>
     </header>
   );

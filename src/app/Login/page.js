@@ -44,7 +44,7 @@ const LoginForm = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 via-blue-500 to-yellow-500">
       <div className="bg-gradient-to-r from-white via-gray-100 to-white p-8 rounded-lg shadow-lg w-full max-w-xl">
         <div className="flex justify-center flex-col items-center mb-6">
-          <h1 className='text-5xl text-center font-bold'>Quiz Website</h1>
+          <h1 className='text-5xl text-center font-bold'>Solve And Wins</h1>
           <h2 className="text-2xl font-bold mt-4">Admin Login</h2>
         </div>
         <form onSubmit={handleSubmit}>
@@ -70,11 +70,11 @@ const LoginForm = () => {
               required
             />
           </div>
-          <div className="mb-4 text-right">
+          {/* <div className="mb-4 text-right">
             <a href="#" className="text-blue-500 hover:underline">
               Forgot password?
             </a>
-          </div>
+          </div> */}
           <button
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"

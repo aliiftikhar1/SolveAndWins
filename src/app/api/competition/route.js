@@ -10,6 +10,8 @@ export async function POST(request) {
       description, 
       image,
       status,
+      start,
+      duration,
       startedAt, 
       endedAt 
     } = data;
@@ -21,6 +23,8 @@ export async function POST(request) {
         description,
         image,
         status,
+        start,
+        duration,
         startedAt: new Date(startedAt), // Ensure date conversion
         endedAt: new Date(endedAt), // Ensure date conversion
         createdAt: new Date(),

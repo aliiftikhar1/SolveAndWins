@@ -66,12 +66,13 @@ const Users = () => {
     dob: "",
     city: "",
     province: "",
-    fbProfile: "",
-    tiktok: "",
     whatsappNo: "",
     country: "",
-    status: "", // Added status field
+    status: "",
+    image: null, // Use 'image' field instead of 'imageFile'
   });
+
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null); // For image preview
 
   useEffect(() => {
     fetchAdminUsers();
@@ -105,12 +106,12 @@ const Users = () => {
       dob: "",
       city: "",
       province: "",
-      fbProfile: "",
-      tiktok: "",
       whatsappNo: "",
       country: "",
-      status: "", // Reset status field
+      status: "",
+      image: null,
     });
+    setImagePreviewUrl(null); 
     setOpenAddDialog(true);
   };
 
@@ -132,20 +133,26 @@ const Users = () => {
       dob: user.dob ? user.dob.split("T")[0] : "",
       city: user.city,
       province: user.province,
-      fbProfile: user.fbProfile,
-      tiktok: user.tiktok,
       whatsappNo: user.whatsappNo,
       country: user.country,
-      status: user.status || "", // Populate status field
+      status: user.status || "",
+      image: null, // Reset image
     });
+    setImagePreviewUrl(
+      user.image
+        ? `https://solveandwins.advanceaitool.com/uploads/${user.image}`
+        : null
+    ); // Set existing image for preview
     setOpenEditDialog(true);
   };
 
   const handleEditClose = () => {
     setOpenEditDialog(false);
     setEditingUser(null);
+    setImagePreviewUrl(null); // Reset image preview
   };
 
+  // Handle text input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -154,10 +161,59 @@ const Users = () => {
     }));
   };
 
+  // Handle image input changes
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file,
+      }));
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Convert Image to Base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Upload Image and Get URL
+  const uploadImage = async (base64Image) => {
+    try {
+      const response = await axios.post(
+        "https://solveandwins.advanceaitool.com/uploadImage.php",
+        { image: base64Image }
+      );
+      console.log("Image has been uploaded: ",response.data.image_url);
+      return response.data.image_url; // Extract image URL
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw new Error("Image upload failed");
+    }
+  };
+
   const handleAddSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullname, email, password, confirmPassword, status } = formData;
+    const {
+      fullname,
+      email,
+      password,
+      confirmPassword,
+      status,
+      image,
+    } = formData;
 
     if (!fullname || !email || !password || !confirmPassword || !status) {
       setSnackbar({
@@ -178,7 +234,18 @@ const Users = () => {
     }
 
     try {
-      await axios.post("/api/user", formData);
+      let imageName = "";
+      if (image) {
+        const base64Image = await convertToBase64(image);
+        imageName = await uploadImage(base64Image);
+      }
+
+      const dataToSubmit = {
+        ...formData,
+        image: imageName,
+      };
+      delete dataToSubmit.confirmPassword;
+      await axios.post("/api/user", dataToSubmit);
       setSnackbar({
         open: true,
         message: "User added successfully.",
@@ -199,7 +266,14 @@ const Users = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullname, email, password, confirmPassword, status } = formData;
+    const {
+      fullname,
+      email,
+      password,
+      confirmPassword,
+      status,
+      image,
+    } = formData;
 
     if (!fullname || !email || !status) {
       setSnackbar({
@@ -220,11 +294,21 @@ const Users = () => {
     }
 
     try {
-      const updateData = { ...formData };
-      if (!password) {
-        delete updateData.password; // Remove password field if not being updated
+      let imageName = editingUser.image || ""; // Keep existing image name if not changed
+      if (image) {
+        const base64Image = await convertToBase64(image);
+        imageName = await uploadImage(base64Image);
       }
-      await axios.put(`/api/user/${editingUser.id}`, updateData);
+
+      const dataToSubmit = {
+        ...formData,
+        image: imageName,
+      };
+      delete dataToSubmit.confirmPassword;
+      if (!password) {
+        delete dataToSubmit.password; // Remove password field if not being updated
+      }
+      await axios.put(`/api/user/${editingUser.id}`, dataToSubmit);
       setSnackbar({
         open: true,
         message: "User updated successfully.",
@@ -278,6 +362,20 @@ const Users = () => {
         accessor: "id",
       },
       {
+        Header: "Profile Image",
+        accessor: "image",
+        Cell: ({ value }) =>
+          value ? (
+            <img
+              src={`https://solveandwins.advanceaitool.com/uploads/${value}`}
+              alt="Profile"
+              style={{ width: 50, height: 50, borderRadius: "50%" }}
+            />
+          ) : (
+            "No Image"
+          ),
+      },
+      {
         Header: "Full Name",
         accessor: "fullname",
       },
@@ -287,7 +385,7 @@ const Users = () => {
       },
       {
         Header: "Status",
-        accessor: "status", // Added status column
+        accessor: "status",
       },
       {
         Header: "Address",
@@ -296,14 +394,6 @@ const Users = () => {
       {
         Header: "Father's Name",
         accessor: "fathername",
-      },
-      {
-        Header: "Education",
-        accessor: "education",
-      },
-      {
-        Header: "Institute",
-        accessor: "institute",
       },
       {
         Header: "City",
@@ -316,6 +406,10 @@ const Users = () => {
       {
         Header: "Country",
         accessor: "country",
+      },
+      {
+        Header: "WhatsApp No",
+        accessor: "whatsappNo",
       },
       {
         Header: "Actions",
@@ -527,6 +621,25 @@ const Users = () => {
                 <MenuItem value="Active">Active</MenuItem>
               </Select>
             </FormControl>
+            {/* Image Upload */}
+            <div style={{ marginTop: "16px" }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </div>
+            {imagePreviewUrl && (
+              <img
+                src={imagePreviewUrl}
+                alt="Preview"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "200px",
+                  marginTop: "10px",
+                }}
+              />
+            )}
             {/* Other Fields */}
             <TextField
               label="Address"
@@ -582,22 +695,6 @@ const Users = () => {
               label="Province"
               name="province"
               value={formData.province}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Facebook Profile"
-              name="fbProfile"
-              value={formData.fbProfile}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="TikTok"
-              name="tiktok"
-              value={formData.tiktok}
               onChange={handleInputChange}
               fullWidth
               margin="normal"
@@ -706,6 +803,25 @@ const Users = () => {
                 <MenuItem value="Active">Active</MenuItem>
               </Select>
             </FormControl>
+            {/* Image Upload */}
+            <div style={{ marginTop: "16px" }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </div>
+            {imagePreviewUrl && (
+              <img
+                src={imagePreviewUrl}
+                alt="Preview"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "200px",
+                  marginTop: "10px",
+                }}
+              />
+            )}
             {/* Other Fields */}
             <TextField
               label="Address"
@@ -761,22 +877,6 @@ const Users = () => {
               label="Province"
               name="province"
               value={formData.province}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Facebook Profile"
-              name="fbProfile"
-              value={formData.fbProfile}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="TikTok"
-              name="tiktok"
-              value={formData.tiktok}
               onChange={handleInputChange}
               fullWidth
               margin="normal"

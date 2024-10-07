@@ -1,10 +1,10 @@
 'use client'
-import AddVideo from "./AddReviews";
+import AddQuestion from "./AddQuestion";
 
 export default function ManageUsers() {
   return (
     <>
-      <AddVideo/>
+      <AddQuestion/>
     </>
   );
 }

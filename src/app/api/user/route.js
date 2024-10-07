@@ -28,34 +28,36 @@ export async function POST(request) {
       dob,
       city,
       province,
-      fbProfile,
-      tiktok,
+      // fbProfile,
+      // tiktok,
+      image,
       whatsappNo,
       country,
     } = body;
 
-    // Hash the password using bcryptjs
-    const salt = bcrypt.genSaltSync(10); // Generate a salt
-    const hashedPassword = bcrypt.hashSync(password, salt); // Hash the password
+    
+    const salt = bcrypt.genSaltSync(10); 
+    const hashedPassword = bcrypt.hashSync(password, salt); 
 
-    // Create new user with all the required fields
+    
     const newUser = await prisma.user.create({
       data: {
         fullname,
         email,
-        password: hashedPassword, // Save the hashed password
+        password: hashedPassword, 
         address,
         fathername,
         education,
         institute,
-        dob: dob ? new Date(dob) : null, // Convert dob to Date object if provided
+        dob: dob ? new Date(dob) : null,
         city,
         province,
-        fbProfile,
-        tiktok,
+        // fbProfile,
+        // tiktok,
         whatsappNo,
         status,
         country,
+        image,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

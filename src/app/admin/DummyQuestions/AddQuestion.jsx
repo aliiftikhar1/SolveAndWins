@@ -21,21 +21,28 @@ import {
   Alert,
   IconButton,
   TablePagination,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
+
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 
-const AddVideo = () => {
-  const [videos, setVideos] = useState([]);
-  const [filteredVideos, setFilteredVideos] = useState([]);
+const AddQuestion = () => {
+  const [competitions, setCompetitions] = useState([]); // State to store fetched competitions
+  const [questions, setQuestions] = useState([]);
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCompetition, setSelectedCompetition] = useState(""); // State to track selected competition
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [editingVideo, setEditingVideo] = useState(null);
+  const [editingQuestion, setEditingQuestion] = useState(null); // Store the question being edited
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -43,42 +50,77 @@ const AddVideo = () => {
   });
 
   const [formData, setFormData] = useState({
-    title: "",
-    url: "",
+    competitionId: "",
+    qText: "",
   });
 
   useEffect(() => {
-    fetchVideos();
+    fetchCompetitions();
+    fetchQuestions();
   }, []);
 
-  const fetchVideos = async () => {
+  const fetchCompetitions = async () => {
     try {
-      const response = await axios.get("/api/review");
-      setVideos(response.data);
-      setFilteredVideos(response.data);
+      const response = await axios.get("/api/competition");
+      setCompetitions(response.data); // Set the fetched competitions
     } catch (error) {
-      console.error("Error fetching videos:", error);
+      console.error("Error fetching competitions:", error);
       setSnackbar({
         open: true,
-        message: "Failed to fetch videos.",
+        message: "Failed to fetch competitions.",
         type: "error",
       });
     }
   };
 
+  const fetchQuestions = async () => {
+    try {
+      const response = await axios.get("/api/dummyquestions");
+      setQuestions(response.data);
+      setFilteredQuestions(response.data);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to fetch questions.",
+        type: "error",
+      });
+    }
+  };
+
+  // Filter questions by search query and selected competition
+  useEffect(() => {
+    let filtered = questions;
+
+    // Apply search query filter
+    if (searchQuery) {
+      filtered = filtered.filter((question) =>
+        question.qText.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply competition filter
+    if (selectedCompetition) {
+      filtered = filtered.filter(
+        (question) => question.competitionId === parseInt(selectedCompetition)
+      );
+    }
+
+    setFilteredQuestions(filtered);
+  }, [searchQuery, selectedCompetition, questions]);
+
   const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-    const filtered = videos.filter((video) =>
-      video.title.toLowerCase().includes(query)
-    );
-    setFilteredVideos(filtered);
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCompetitionChange = (e) => {
+    setSelectedCompetition(e.target.value);
   };
 
   const handleAddOpen = () => {
     setFormData({
-      title: "",
-      url: "",
+      competitionId: "",
+      qText: "",
     });
     setOpenAddDialog(true);
   };
@@ -98,9 +140,9 @@ const AddVideo = () => {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url } = formData;
+    const { competitionId, qText } = formData;
 
-    if (!title || !url) {
+    if (!competitionId || !qText) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -110,44 +152,44 @@ const AddVideo = () => {
     }
 
     try {
-      await axios.post("/api/review", formData);
+      await axios.post("/api/dummyquestions", formData);
       setSnackbar({
         open: true,
-        message: "Video added successfully.",
+        message: "Question added successfully.",
         type: "success",
       });
-      fetchVideos();
+      fetchQuestions();
       handleAddClose();
     } catch (error) {
-      console.error("Error adding video:", error);
+      console.error("Error adding question:", error);
       setSnackbar({
         open: true,
-        message: "Failed to add video.",
+        message: "Failed to add question.",
         type: "error",
       });
     }
   };
 
-  const handleEditOpen = (video) => {
-    setEditingVideo(video);
+  const handleEditOpen = (question) => {
+    setEditingQuestion(question);
     setFormData({
-      title: video.title,
-      url: video.url,
+      competitionId: question.competitionId,
+      qText: question.qText,
     });
     setOpenEditDialog(true);
   };
 
   const handleEditClose = () => {
     setOpenEditDialog(false);
-    setEditingVideo(null);
+    setEditingQuestion(null);
   };
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url } = formData;
+    const { competitionId, qText } = formData;
 
-    if (!title || !url) {
+    if (!competitionId || !qText) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -157,19 +199,19 @@ const AddVideo = () => {
     }
 
     try {
-      await axios.put(`/api/review/${editingVideo.id}`, formData);
+      await axios.put(`/api/dummyquestions/${editingQuestion.id}`, formData);
       setSnackbar({
         open: true,
-        message: "Video updated successfully.",
+        message: "Question updated successfully.",
         type: "success",
       });
-      fetchVideos();
+      fetchQuestions();
       handleEditClose();
     } catch (error) {
-      console.error("Error updating video:", error);
+      console.error("Error updating question:", error);
       setSnackbar({
         open: true,
-        message: "Failed to update video.",
+        message: "Failed to update question.",
         type: "error",
       });
     }
@@ -177,18 +219,18 @@ const AddVideo = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/review/${id}`);
+      await axios.delete(`/api/dummyquestions/${id}`);
       setSnackbar({
         open: true,
-        message: "Video deleted successfully.",
+        message: "Question deleted successfully.",
         type: "warning",
       });
-      fetchVideos();
+      fetchQuestions();
     } catch (error) {
-      console.error("Error deleting video:", error);
+      console.error("Error deleting question:", error);
       setSnackbar({
         open: true,
-        message: "Failed to delete video.",
+        message: "Failed to delete question.",
         type: "error",
       });
     }
@@ -205,7 +247,7 @@ const AddVideo = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      {/* Toolbar */}
+      {/* Toolbar */} 
       <div
         style={{
           display: "flex",
@@ -215,7 +257,7 @@ const AddVideo = () => {
       >
         <Toolbar>
           <InputBase
-            placeholder="Search videos"
+            placeholder="Search questions"
             value={searchQuery}
             onChange={handleSearch}
             style={{
@@ -226,41 +268,53 @@ const AddVideo = () => {
           />
         </Toolbar>
         <Button variant="contained" color="primary" onClick={handleAddOpen}>
-          Add New Video
+          Add New Question
         </Button>
       </div>
 
-      {/* Table displaying videos */}
+      {/* Competition Select Filter */}
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="competition-filter-label">Filter by Competition</InputLabel>
+        <Select
+          labelId="competition-filter-label"
+          value={selectedCompetition}
+          onChange={handleCompetitionChange}
+          label="Filter by Competition"
+        >
+          <MenuItem value="">
+            <em>All Competitions</em>
+          </MenuItem>
+          {competitions.map((competition) => (
+            <MenuItem key={competition.id} value={competition.id}>
+              {competition.title}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Table displaying questions */}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>URL</TableCell>
+              <TableCell>Question Text</TableCell>
+              <TableCell>Competition</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredVideos
+            {filteredQuestions
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((video) => (
-                <TableRow key={video.id}>
-                  <TableCell>{video.id}</TableCell>
-                  <TableCell>{video.title}</TableCell>
-                  <TableCell>
-                    <a
-                      href={video.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Watch Video
-                    </a>
-                  </TableCell>
+              .map((question) => (
+                <TableRow key={question.id}>
+                  <TableCell>{question.id}</TableCell>
+                  <TableCell>{question.qText}</TableCell>
+                  <TableCell>{question.competition.title}</TableCell>
                   <TableCell>
                     <div style={{ display: "flex", gap: "10px" }}>
                       <FaUserEdit
-                        onClick={() => handleEditOpen(video)}
+                        onClick={() => handleEditOpen(question)}
                         style={{
                           fontSize: "20px",
                           color: "#1976d2",
@@ -268,7 +322,7 @@ const AddVideo = () => {
                         }}
                       />
                       <MdDeleteForever
-                        onClick={() => handleDelete(video.id)}
+                        onClick={() => handleDelete(question.id)}
                         style={{
                           fontSize: "20px",
                           color: "#d32f2f",
@@ -287,14 +341,14 @@ const AddVideo = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={filteredVideos.length}
+        count={filteredQuestions.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
       />
 
-      {/* Add Video Dialog */}
+      {/* Add Question Dialog */}
       <Dialog
         open={openAddDialog}
         onClose={handleAddClose}
@@ -302,7 +356,7 @@ const AddVideo = () => {
         fullWidth
       >
         <DialogTitle>
-          Add New Video
+          Add New Question
           <IconButton
             aria-label="close"
             onClick={handleAddClose}
@@ -318,19 +372,26 @@ const AddVideo = () => {
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleAddSubmit}>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="competition-label">Competition</InputLabel>
+              <Select
+                labelId="competition-label"
+                name="competitionId"
+                value={formData.competitionId}
+                onChange={handleInputChange}
+                label="Competition"
+              >
+                {competitions.map((competition) => (
+                  <MenuItem key={competition.id} value={competition.id}>
+                    {competition.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
-              label="Title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              margin="normal"
-            />
-            <TextField
-              label="YouTube Video Link"
-              name="url"
-              value={formData.url}
+              label="Question Text"
+              name="qText"
+              value={formData.qText}
               onChange={handleInputChange}
               fullWidth
               required
@@ -348,7 +409,7 @@ const AddVideo = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Edit Video Dialog */}
+      {/* Edit Question Dialog */}
       <Dialog
         open={openEditDialog}
         onClose={handleEditClose}
@@ -356,7 +417,7 @@ const AddVideo = () => {
         fullWidth
       >
         <DialogTitle>
-          Edit Video
+          Edit Question
           <IconButton
             aria-label="close"
             onClick={handleEditClose}
@@ -372,19 +433,26 @@ const AddVideo = () => {
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleEditSubmit}>
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="competition-label">Competition</InputLabel>
+              <Select
+                labelId="competition-label"
+                name="competitionId"
+                value={formData.competitionId}
+                onChange={handleInputChange}
+                label="Competition"
+              >
+                {competitions.map((competition) => (
+                  <MenuItem key={competition.id} value={competition.id}>
+                    {competition.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
-              label="Title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              margin="normal"
-            />
-            <TextField
-              label="YouTube Video Link"
-              name="url"
-              value={formData.url}
+              label="Question Text"
+              name="qText"
+              value={formData.qText}
               onChange={handleInputChange}
               fullWidth
               required
@@ -421,4 +489,4 @@ const AddVideo = () => {
   );
 };
 
-export default AddVideo;
+export default AddQuestion;

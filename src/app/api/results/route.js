@@ -10,8 +10,10 @@ export async function POST(request) {
       userId,
       noOfQuestions,
       correctAnswers,
+      timeTaken,
       score,
       timeAttempted,
+
     } = data;
 
     // Create a new result entry in the database
@@ -22,6 +24,7 @@ export async function POST(request) {
         noOfQuestions: parseInt(noOfQuestions, 10),
         correctAnswers: parseInt(correctAnswers, 10),
         score: parseFloat(score),
+        timeTaken: parseInt(timeTaken,10),
         timeAttempted: new Date(timeAttempted),
         // createdAt and updatedAt are automatically handled by Prisma
       },

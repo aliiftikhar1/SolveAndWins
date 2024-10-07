@@ -53,7 +53,7 @@ export default function Competition() {
   // Handle start button click
   const handleStartCompetition = (competitionId) => {
     if(login === true){
-      router.push(`/pages/question/${competitionId}`);
+      router.push(`/pages/competitions/${competitionId}`);
       console.log(`Starting competition with ID: ${competitionId}`);
     }else{
       router.push(`/UserLogin`);
@@ -116,7 +116,7 @@ export default function Competition() {
                     onClick={() => handleStartCompetition(competition.id)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200"
                   >
-                    Start Competition
+                    Open Competition
                   </button>
                 </div>
               </div>

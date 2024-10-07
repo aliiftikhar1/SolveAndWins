@@ -7,28 +7,17 @@ export async function PUT(request, { params }) {
   try {
     const data = await request.json();
     const {
-      competitionId,
-      userId,
-      noOfQuestions,
-      correctAnswers,
-      score,
-      timeTaken,
-      timeAttempted,
+      title,
+      url
     } = data;
 
     console.log("Data received for update:", data);
 
-    const updatedResult = await prisma.result.update({
+    const updatedResult = await prisma.review.update({
       where: { id: parseInt(id, 10) },
       data: {
-        competitionId: parseInt(competitionId, 10),
-        userId: parseInt(userId, 10),
-        noOfQuestions: parseInt(noOfQuestions, 10),
-        correctAnswers: parseInt(correctAnswers, 10),
-        timeTaken: parseInt(timeTaken,10),
-        score: parseFloat(score),
-        timeAttempted: new Date(timeAttempted),
-        // updatedAt is automatically handled by Prisma
+        title,
+        url
       },
     });
 
@@ -46,7 +35,7 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   const { id } = params; // Result ID
   try {
-    const deletedResult = await prisma.result.delete({
+    const deletedResult = await prisma.review.delete({
       where: { id: parseInt(id, 10) },
     });
 
@@ -66,15 +55,10 @@ export async function GET(request, { params }) {
   const  id  = parseInt(params.id); // Result ID
   console.log("id",id);
   try {
-    const result = await prisma.result.findMany({
-      where: { userId: id },
-      include: {
-        competition: true, // Include related competition data
-        user: true,        // Include related user data
-      },
+    const result = await prisma.review.findUnique({
+      where: { id: id },
     });
 
-    console.log("Results are",result);
     if (!result) {
       return NextResponse.json(
         { message: "Result not found" },

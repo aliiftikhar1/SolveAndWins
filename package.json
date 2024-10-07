@@ -42,6 +42,7 @@
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.25.1",
     "react-table": "^7.8.0",
     "react-tabs": "^6.0.2",
