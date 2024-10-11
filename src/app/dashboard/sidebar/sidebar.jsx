@@ -8,13 +8,12 @@ import {
   FaUserShield,
   FaListAlt,
   FaBlog,
-  FaTrophy,
   FaGift,
   FaQuestion,
   FaComments,
   FaStar,
   FaBell,
-  FaTrophyAlt,
+  FaTrophy,
 } from 'react-icons/fa'; // Use relevant icons for the items
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode'; // Corrected import
@@ -113,7 +112,7 @@ const Sidebar = () => {
     {
       title: "Competitions",
       path: "/admin/Competition",
-      icon: <FaTrophyAlt className="h-5 w-5" />, // Use FaTrophyAlt for Competitions
+      icon: <FaTrophy className="h-5 w-5" />, // Use FaTrophyAlt for Competitions
       roles: ["admin"], // Only admin can see this
     },
     {
