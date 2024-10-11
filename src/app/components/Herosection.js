@@ -3,7 +3,7 @@ import React from 'react';
 const HeroSection = () => {
   return (
     <section className="relative bg-gray-900 text-white">
-      <div className="container mx-auto px-6 py-20 flex flex-col items-center">
+      <div className="container z-50 mx-auto px-6 py-20 flex flex-col items-center">
         <h1 className="text-4xl md:text-6xl font-bold text-center">
           Unleash Your Potential. Win Exciting Prizes!
         </h1>
@@ -26,10 +26,10 @@ const HeroSection = () => {
         </div>
       </div>
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{ backgroundImage: 'url(/images/hero-bg.jpg)' }}
-      ></div>
+      {/* <div
+        className="absolute inset-0 bg-cover bg-fixed bg-center opacity-30"
+        style={{ backgroundImage: 'url(/pro1.png)' }}
+      ></div> */}
     </section>
   );
 };
