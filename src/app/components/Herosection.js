@@ -13,13 +13,13 @@ const HeroSection = () => {
         <div className="mt-8 flex space-x-4">
           <a
             href="/UserLogin"
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-lg font-semibold"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md text-lg font-semibold cursor-pointer"
           >
             Get Started Now
           </a>
           <a
             href="/pages/competitions"
-            className="px-6 py-3 bg-transparent border border-white hover:bg-white hover:text-gray-900 rounded-md text-lg font-semibold"
+            className="px-6 py-3 bg-transparent border cursor-pointer border-white hover:bg-white hover:text-gray-900 rounded-md text-lg font-semibold"
           >
             Explore Competitions
           </a>
