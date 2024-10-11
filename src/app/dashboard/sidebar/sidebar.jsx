@@ -11,19 +11,13 @@ import {
   FaTrophy,
   FaGift,
   FaQuestion,
-  FaBuilding,
-  FaTags,
-  FaPercent,
-  FaTicketAlt,
-  FaInbox,
-  FaFolderOpen,
-  FaCog,
-  FaQuestionCircle,
-  FaSpeakerDeck,
+  FaComments,
+  FaStar,
   FaBell,
-} from 'react-icons/fa';
+  FaTrophyAlt,
+} from 'react-icons/fa'; // Use relevant icons for the items
 import Cookies from 'js-cookie';
-import {jwtDecode} from 'jwt-decode'; // Corrected import
+import { jwtDecode } from 'jwt-decode'; // Corrected import
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -83,135 +77,75 @@ const Sidebar = () => {
     {
       title: "Users",
       path: "/admin/Users",
-      icon: <FaUsers className="h-5 w-5" />,
+      icon: <FaUsers className="h-5 w-5" />, // Use FaUsers for Users
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Admin Users",
       path: "/admin/AdminUser",
-      icon: <FaUserShield className="h-5 w-5" />,
+      icon: <FaUserShield className="h-5 w-5" />, // Use FaUserShield for Admin Users
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Blog Category",
       path: "/admin/BlogCategory",
-      icon: <FaListAlt className="h-5 w-5" />,
+      icon: <FaListAlt className="h-5 w-5" />, // Use FaListAlt for Blog Category
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Blogs",
       path: "/admin/Blogs",
-      icon: <FaBlog className="h-5 w-5" />,
+      icon: <FaBlog className="h-5 w-5" />, // Use FaBlog for Blogs
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Reviews",
       path: "/admin/Reviews",
-      icon: <FaBlog className="h-5 w-5" />,
+      icon: <FaStar className="h-5 w-5" />, // Use FaStar for Reviews
+      roles: ["admin"], // Only admin can see this
+    },
+    {
+      title: "Comments",
+      path: "/admin/Comments",
+      icon: <FaComments className="h-5 w-5" />, // Use FaComments for Comments
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Competitions",
       path: "/admin/Competition",
-      icon: <FaTrophy className="h-5 w-5" />,
+      icon: <FaTrophyAlt className="h-5 w-5" />, // Use FaTrophyAlt for Competitions
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Results",
       path: "/admin/Results",
-      icon: <FaBell className="h-5 w-5" />,
+      icon: <FaBell className="h-5 w-5" />, // Use FaBell for Results
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Prizes",
       path: "/admin/Prize",
-      icon: <FaGift className="h-5 w-5" />,
+      icon: <FaGift className="h-5 w-5" />, // Use FaGift for Prizes
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Questions",
       path: "/admin/Questions",
-      icon: <FaQuestion className="h-5 w-5" />,
+      icon: <FaQuestion className="h-5 w-5" />, // Use FaQuestion for Questions
       roles: ["admin"], // Only admin can see this
     },
     {
       title: "Dummy Questions",
       path: "/admin/DummyQuestions",
-      icon: <FaQuestion className="h-5 w-5" />,
+      icon: <FaQuestion className="h-5 w-5" />, // Use FaQuestion for Dummy Questions
       roles: ["admin"], // Only admin can see this
     },
-    // Uncomment and update icons as needed
-    // {
-    //   title: "Companies",
-    //   path: "/admin/Companies",
-    //   icon: <FaBuilding className="h-5 w-5" />,
-    //   roles: ["admin", "sub admin"],
-    // },
-    // {
-    //   title: "Categories",
-    //   path: "/admin/Categories",
-    //   icon: <FaTags className="h-5 w-5" />,
-    //   roles: ["admin", "sub admin"],
-    // },
-    // {
-    //   title: "Offers",
-    //   path: "/admin/Offers",
-    //   icon: <FaPercent className="h-5 w-5" />,
-    //   roles: ["admin", "sub admin"],
-    // },
-    // {
-    //   title: "Category Coupon",
-    //   path: "/admin/Category_Coupon",
-    //   icon: <FaTicketAlt className="h-5 w-5" />,
-    //   roles: ["admin", "sub admin"],
-    // },
-    // {
-    //   title: "Submissions",
-    //   path: "/admin/Submittions",
-    //   icon: <FaInbox className="h-5 w-5" />,
-    //   roles: ["admin"],
-    // },
-    // {
-    //   title: "Blog Categories",
-    //   path: "/admin/BlogCategories",
-    //   icon: <FaFolderOpen className="h-5 w-5" />,
-    //   roles: ["admin", "sub admin"],
-    // },
-    // {
-    //   title: "FAQ's",
-    //   path: "/admin/Faqs",
-    //   icon: <FaQuestionCircle className="h-5 w-5" />,
-    //   roles: ["admin"],
-    // },
-  ];
-
-  // Define dropdown menu items with roles and appropriate icons
-  const dropdownMenuItems = [
-    // Example Dropdown
-    // {
-    //   title: "Settings",
-    //   roles: ["admin"],
-    //   list: [
-    //     {
-    //       title: "Profile Settings",
-    //       path: "/admin/settings/profile",
-    //       icon: <FaCog className="h-4 w-4" />,
-    //       roles: ["admin"],
-    //     },
-    //     // Add more dropdown items as needed
-    //   ],
-    // },
   ];
 
   return (
     <div className="bg-gray-700 text-white w-full min-h-screen flex flex-col">
       {/* Profile Section */}
       <div className="p-6 text-center">
-        {/* <img
-          src="/logo/logo.jpg"
-          alt="Profile"
-          className="rounded-full mx-auto mb-4 w-24 h-24 object-cover"
-        /> */}
         <h1 className='text-3xl font-extrabold'>
           SolveAndWins
         </h1>
@@ -238,58 +172,6 @@ const Sidebar = () => {
                       </span>
                     </button>
                   </Link>
-                </li>
-              )
-          )}
-
-          {/* Dropdown Menu */}
-          {dropdownMenuItems.map(
-            (category, index) =>
-              category.roles.includes(userRole) && (
-                <li key={category.title}>
-                  <button
-                    className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none"
-                    onClick={() => toggleDropdown(index)}
-                    aria-haspopup="true"
-                    aria-expanded={isDropdownOpen[index] ? 'true' : 'false'}
-                  >
-                    {category.icon && (
-                      <span className="mr-3">
-                        {category.icon}
-                      </span>
-                    )}
-                    <span className="text-sm font-medium">
-                      {category.title}
-                    </span>
-                    <FaChevronDown
-                      className={`h-4 w-4 ml-auto transform transition-transform duration-200 ${
-                        isDropdownOpen[index] ? 'rotate-180' : ''
-                      }`}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  {isDropdownOpen[index] && (
-                    <ul className="ml-6 mt-2 space-y-2">
-                      {category.list.map(
-                        (item) =>
-                          item.roles.includes(userRole) && (
-                            <li key={item.title}>
-                              <Link href={item.path} passHref>
-                                <button
-                                  className="flex items-center p-2 hover:bg-blue-700 rounded-md w-full text-left"
-                                  aria-label={item.title}
-                                >
-                                  {item.icon}
-                                  <span className="ml-3 text-sm font-medium">
-                                    {item.title}
-                                  </span>
-                                </button>
-                              </Link>
-                            </li>
-                          )
-                      )}
-                    </ul>
-                  )}
                 </li>
               )
           )}
