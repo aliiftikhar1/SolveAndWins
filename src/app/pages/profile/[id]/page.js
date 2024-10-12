@@ -68,7 +68,7 @@ export default function Profile() {
         <UserLayout>
             <div className="container mx-auto px-4 py-8">
                 {/* User Profile Card */}
-                <div className="bg-white shadow-lg rounded-lg p-8 flex flex-col md:flex-row items-center">
+                <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row items-center">
                     <div className="w-full md:w-1/3 mb-4 md:mb-0">
                         <img
                             src={`https://solveandwins.advanceaitool.com/uploads/${user.image}`}
@@ -76,8 +76,8 @@ export default function Profile() {
                             alt="User Profile"
                         />
                     </div>
-                    <div className="w-full md:w-2/3">
-                        <h2 className="text-2xl font-semibold text-gray-700 mb-2">{user.fullname}</h2>
+                    <div className="w-full md:w-2/3 text-center md:text-left">
+                        <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">{user.fullname}</h2>
                         <p className="text-gray-600"><strong>Father Name:</strong> {user.fathername}</p>
                         <p className="text-gray-600"><strong>Date of Birth:</strong> {user.dob}</p>
                         <p className="text-gray-600"><strong>Education:</strong> {user.education}</p>
@@ -88,33 +88,35 @@ export default function Profile() {
                 </div>
 
                 {/* User Results Table */}
-                <div className="mt-10">
-                    <h3 className="text-2xl font-semibold text-gray-700 mb-4 text-center">User Results</h3>
+                <div className="mt-8">
+                    <h3 className="text-xl md:text-2xl font-semibold text-gray-700 mb-4 text-center">User Results</h3>
                     {results ? (
-                        <table className="w-full text-left bg-white shadow-lg rounded-lg">
-                            <thead className="bg-blue-500 text-white">
-                                <tr>
-                                    <th className="py-3 px-6 text-lg">Competition</th>
-                                    <th className="py-3 px-6 text-lg">No. of Questions</th>
-                                    <th className="py-3 px-6 text-lg">Correct Answers</th>
-                                    <th className="py-3 px-6 text-lg">Score</th>
-                                    <th className="py-3 px-6 text-lg">Time Taken (HH:MM:SS)</th>
-                                    <th className="py-3 px-6 text-lg">Time Attempted</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {results.map((result, index) => (
-                                    <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
-                                        <td className="py-4 px-6 border-b">{result.competition.title}</td>
-                                        <td className="py-4 px-6 border-b">{result.noOfQuestions}</td>
-                                        <td className="py-4 px-6 border-b">{result.correctAnswers}</td>
-                                        <td className="py-4 px-6 border-b">{result.score}</td>
-                                        <td className="py-4 px-6 border-b">{formatTime(result.timeTaken)}</td>
-                                        <td className="py-4 px-6 border-b">{new Date(result.timeAttempted).toLocaleString()}</td>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left bg-white shadow-lg rounded-lg">
+                                <thead className="bg-blue-500 text-white">
+                                    <tr>
+                                        <th className="py-3 px-4 md:px-6 text-sm md:text-lg">Competition</th>
+                                        <th className="py-3 px-4 md:px-6 text-sm md:text-lg">No. of Questions</th>
+                                        <th className="py-3 px-4 md:px-6 text-sm md:text-lg">Correct Answers</th>
+                                        <th className="py-3 px-4 md:px-6 text-sm md:text-lg">Score</th>
+                                        <th className="py-3 px-4 md:px-6 text-sm md:text-lg">Time Taken (HH:MM:SS)</th>
+                                        <th className="py-3 px-4 md:px-6 text-sm md:text-lg">Time Attempted</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {results.map((result, index) => (
+                                        <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
+                                            <td className="py-4 px-4 md:px-6 border-b">{result.competition.title}</td>
+                                            <td className="py-4 px-4 md:px-6 border-b">{result.noOfQuestions}</td>
+                                            <td className="py-4 px-4 md:px-6 border-b">{result.correctAnswers}</td>
+                                            <td className="py-4 px-4 md:px-6 border-b">{result.score}</td>
+                                            <td className="py-4 px-4 md:px-6 border-b">{formatTime(result.timeTaken)}</td>
+                                            <td className="py-4 px-4 md:px-6 border-b">{new Date(result.timeAttempted).toLocaleString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     ) : (
                         <div className="text-center text-blue-500">Loading results...</div>
                     )}

@@ -88,7 +88,7 @@ export default function Header() {
           {token ? (
             <div className="flex gap-8 items-center">
               <div>
-                <a href={`/pages/profile/${finalid}`}>
+                <a href={`/pages/profile/${user?.id}`}>
                 <img
                   src={`https://solveandwins.advanceaitool.com/uploads/${user?.image}`}
                   alt="User Profile"
@@ -145,6 +145,19 @@ export default function Header() {
           {/* Search Option for Mobile */}
           <div className="flex items-center pt-4 border-t mt-4">
             {token ? (
+              <>
+              <div className="flex flex-col w-full justify-center items-center">
+              <div>
+                <a href={`/pages/profile/${user?.id}`}>
+                <img
+                  src={`https://solveandwins.advanceaitool.com/uploads/${user?.image}`}
+                  alt="User Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                Profile
+                </a>
+              </div>
+              
               <button
                 className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none"
                 onClick={handleLogout}
@@ -152,6 +165,8 @@ export default function Header() {
                 <FaSignOutAlt className="h-5 w-5" />
                 <span className="ml-3 text-sm font-medium">Logout</span>
               </button>
+              </div>
+              </>
             ) : (
               <a href="/UserLogin">
                 <button className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none">

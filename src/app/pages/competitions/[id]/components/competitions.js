@@ -175,7 +175,7 @@ export default function SingleCompetition() {
 
                   {/* Question Card */}
                   <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-6 rounded-lg text-white shadow-md">
-                    <h3 className="text-2xl font-semibold mb-4">
+                    <h3 className="md:text-2xl text-lg font-semibold mb-4">
                       {dummyQuestions[currentQuestionIndex].qText}
                     </h3>
                   </div>

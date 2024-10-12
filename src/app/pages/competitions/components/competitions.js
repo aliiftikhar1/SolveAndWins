@@ -62,18 +62,18 @@ export default function Competition() {
 
   return (
     <div className="min-h-screen py-12 bg-gradient-to-br from-purple-500 via-pink-500 to-red-500">
-      <div className="container mx-auto px-6">
-        <h1 className="text-5xl font-extrabold mb-12 text-center text-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-8 sm:mb-12 text-center text-white">
           Explore Competitions
         </h1>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {competitions.map((competition) => (
             <div
               key={competition.id}
-              className="flex bg-gray-800/30 h-72 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="flex flex-col md:flex-row bg-gray-800/30 h-auto md:h-72 backdrop-blur-md rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
-              {/* Image on the left side */}
-              <div className="w-1/3">
+              {/* Image on the top for mobile, left for desktop */}
+              <div className="w-full md:w-1/3">
                 <img
                   src={
                     competition.image
@@ -81,23 +81,23 @@ export default function Competition() {
                       : 'https://cdn.pixabay.com/photo/2024/01/17/12/06/car-8514314_640.png'
                   }
                   alt={competition.title}
-                  className="w-full h-full object-fill"
+                  className="w-full h-48 md:h-full object-cover"
                 />
               </div>
 
-              {/* Description and other details on the right side */}
-              <div className="w-2/3 p-6 flex flex-col justify-between">
+              {/* Description and other details */}
+              <div className="w-full md:w-2/3 p-4 md:p-6 flex flex-col justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold mb-2 text-white">
+                  <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-white">
                     {competition.title}
                   </h2>
-                  <p className="text-gray-200 mb-4">
+                  <p className="text-sm sm:text-base text-gray-200 mb-4">
                     {competition.description}
                   </p>
                 </div>
 
                 {/* Start and End Dates */}
-                <div className="text-sm text-gray-300 mb-4">
+                <div className="text-xs sm:text-sm text-gray-300 mb-4">
                   <p className="flex items-center">
                     <FaCalendarAlt className="mr-1 text-gray-400" size={16} />
                     <strong className="mr-1">Start:</strong>
@@ -110,7 +110,7 @@ export default function Competition() {
                   </p>
                 </div>
 
-                {/* Button on the right side */}
+                {/* Button */}
                 <div className="self-end">
                   <button
                     onClick={() => handleStartCompetition(competition.id)}

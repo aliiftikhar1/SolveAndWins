@@ -131,11 +131,17 @@ export default function ReviewDetail() {
   if (!review) return <Typography>Loading...</Typography>;
 
   const videoId = extractVideoId(review.url);
+  const heading = review.title;
 
   return (
     <UserLayout>
       <Container maxWidth="lg" style={{ marginTop: "20px", padding: "20px" }}>
         {/* Video Section */}
+        {heading &&(<>
+            <div className="text-4xl font-bold text-gray-600 px-8 pb-4">
+            Title: <span className="text-gray-600">{heading}</span>
+            </div>
+            </>)}
         <Paper elevation={4} style={{ padding: "20px", borderRadius: "12px" }}>
           <div
             style={{
@@ -230,7 +236,7 @@ export default function ReviewDetail() {
           </Box>
 
           {/* Right Side: Comment Form */}
-          <Box flex={1} padding="20px" bgcolor="#fafafa" borderRadius="12px" boxShadow={3}>
+          <Box flex={1} padding="20px" borderRadius="12px" >
             <Typography variant="h6">Submit a Comment</Typography>
             {errorMessage && (
               <Typography variant="body2" color="error" style={{ marginBottom: "10px" }}>
