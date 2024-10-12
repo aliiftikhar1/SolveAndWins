@@ -135,9 +135,11 @@ export default function Header() {
           </button>
         </div>
         <nav className="p-4 space-y-4 flex flex-col">
-          <a href="/" className="hover:text-blue-700">Home</a>
+        <a href="/" className="hover:text-blue-700">Home</a>
           <a href="/pages/competitions" className="hover:text-blue-700">Competitions</a>
           <a href="/pages/aboutus" className="hover:text-blue-700">About Us</a>
+          <a href="/pages/blog" className="hover:text-blue-700">Blogs</a>
+          <a href="/pages/reviews" className="hover:text-blue-700">Review</a>
           <a href="/pages/contactus" className="hover:text-blue-700">Contact Us</a>
 
           {/* Search Option for Mobile */}
