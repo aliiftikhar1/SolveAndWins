@@ -58,13 +58,13 @@ export async function PUT(request, { params }) {
 // DELETE a blog by ID
 export async function DELETE(request, { params }) {
   const id = parseInt(params.id);
-
+console.log("Category to  be deleted",id);
   if (isNaN(id)) {
     return NextResponse.json({ error: 'Invalid ID provided' }, { status: 400 });
   }
 
   try {
-    const deletedBlogcategory = await prisma.BlogCategories.delete({
+    const deletedBlogcategory = await prisma.blogcategories.delete({
       where: { id },
     });
 
