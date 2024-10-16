@@ -78,7 +78,7 @@ export default function Competition() {
                   src={
                     competition.image
                       ? `https://solveandwins.advanceaitool.com/uploads/${competition.image}`
-                      : 'https://cdn.pixabay.com/photo/2024/01/17/12/06/car-8514314_640.png'
+                      : 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg'
                   }
                   alt={competition.title}
                   className="w-full h-48 md:h-full object-cover"
