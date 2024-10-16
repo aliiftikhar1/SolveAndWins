@@ -37,6 +37,7 @@ import axios from "axios";
 
 const Competitions = () => {
   // State Variables
+  const [loading, setLoading] = useState(false);
   const [competitions, setCompetitions] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -165,8 +166,10 @@ const Competitions = () => {
   };
 
   // Handle Add Competition Submit
+  // Handle Add Competition Submit
   const handleAddSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
 
     const {
       title,
@@ -194,6 +197,7 @@ const Competitions = () => {
         message: "Please fill in all required fields.",
         type: "error",
       });
+      setLoading(false); // Stop loading
       return;
     }
 
@@ -212,7 +216,7 @@ const Competitions = () => {
         duration: parseInt(duration),
         image: imageUrl,
         status,
-        start, // Include start
+        start,
       };
 
       await axios.post("/api/competition", competitionData);
@@ -230,12 +234,15 @@ const Competitions = () => {
         message: "Failed to add competition.",
         type: "error",
       });
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
   // Handle Edit Competition Submit
   const handleEditSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
 
     const {
       title,
@@ -263,11 +270,12 @@ const Competitions = () => {
         message: "Please fill in all required fields.",
         type: "error",
       });
+      setLoading(false); // Stop loading
       return;
     }
 
     try {
-      let imageUrl = editingCompetition.image; // Existing image URL
+      let imageUrl = editingCompetition.image;
       if (image) {
         const base64Image = await convertToBase64(image);
         imageUrl = await uploadImage(base64Image);
@@ -281,13 +289,10 @@ const Competitions = () => {
         duration: parseInt(duration),
         image: imageUrl,
         status,
-        start, // Include start
+        start,
       };
 
-      await axios.put(
-        `/api/competition/${editingCompetition.id}`,
-        updatedCompetitionData
-      );
+      await axios.put(`/api/competition/${editingCompetition.id}`, updatedCompetitionData);
       setSnackbar({
         open: true,
         message: "Competition updated successfully.",
@@ -302,8 +307,11 @@ const Competitions = () => {
         message: "Failed to update competition.",
         type: "error",
       });
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
+
 
   // Handle Delete Button Click
   const handleDelete = (id) => {
@@ -655,14 +663,16 @@ const Competitions = () => {
               />
             </div>
             {/* Form Actions */}
+            {/* Form Actions */}
             <DialogActions>
-              <Button onClick={handleAddClose} color="primary">
+              <Button onClick={handleAddClose} color="primary" disabled={loading}>
                 Cancel
               </Button>
-              <Button type="submit" color="primary" variant="contained">
-                Save
+              <Button type="submit" color="primary" variant="contained" disabled={loading}>
+                {loading ? "Saving..." : "Save"}
               </Button>
             </DialogActions>
+
           </form>
         </DialogContent>
       </Dialog>
@@ -807,14 +817,16 @@ const Competitions = () => {
               )}
             </div>
             {/* Form Actions */}
+            {/* Form Actions */}
             <DialogActions>
-              <Button onClick={handleEditClose} color="primary">
+              <Button onClick={handleEditClose} color="primary" disabled={loading}>
                 Cancel
               </Button>
-              <Button type="submit" color="primary" variant="contained">
-                Update
+              <Button type="submit" color="primary" variant="contained" disabled={loading}>
+                {loading ? "Updating..." : "Update"}
               </Button>
             </DialogActions>
+
           </form>
         </DialogContent>
       </Dialog>
