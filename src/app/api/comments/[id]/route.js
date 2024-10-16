@@ -44,7 +44,7 @@ export async function PUT(request,{params}) {
       data: {
         reviewid:data.reviewid,
         userid:data.userid,
-        rating:data.rating,
+        rating:parseInt(data.rating),
         comment:data.comment,
         status:data.status
       },

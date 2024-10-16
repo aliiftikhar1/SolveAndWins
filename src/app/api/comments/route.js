@@ -13,7 +13,7 @@ export async function POST(request) {
       data: {
         reviewid: parseInt(reviewid),
         userid,
-        rating,
+        rating: parseInt(rating),
         comment,
         status
       },

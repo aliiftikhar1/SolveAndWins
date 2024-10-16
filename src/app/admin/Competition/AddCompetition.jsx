@@ -830,8 +830,6 @@ const Competitions = () => {
           </form>
         </DialogContent>
       </Dialog>
-
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={deleteConfirmation.open}
         onClose={handleCancelDelete}
