@@ -13,8 +13,14 @@ const Dashboard = () => {
             <Card item={item} key={item.id} />
           ))} */}
         </div>
-        <Transactions />
-        <Chart />
+        {/* <Transactions />
+        <Chart /> */}
+        <div className="h-screen flex justify-center items-center">
+
+          <h1 className="text-2xl font-bold">
+            Admin Dashboard
+          </h1>
+        </div>
       </div>
   
     </div>
