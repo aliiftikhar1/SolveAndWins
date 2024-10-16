@@ -51,7 +51,6 @@ const ReviewCategories = () => {
     message: "",
     type: "",
   });
-  const [statusFilter, setStatusFilter] = useState(""); // State for filtering by status
 
   useEffect(() => {
     fetchReviews();
@@ -229,12 +228,14 @@ const ReviewCategories = () => {
 
   // Handle status change directly from the table
   const handleStatusChange = async (review, newStatus) => {
+    // Create an updated record including the new status and other data
     const updatedRecord = {
       ...review, // Spread all existing review data
       status: newStatus, // Update the status field
     };
-
+  
     try {
+      // Send the PUT request with the updated record
       await axios.put(`/api/comments/${review.id}`, updatedRecord);
       setSnackbar({
         open: true,
@@ -251,11 +252,6 @@ const ReviewCategories = () => {
       });
     }
   };
-
-  const filteredReviews = reviews.filter((review) => {
-    if (statusFilter === "") return true; // No filter applied, show all reviews
-    return review.status === statusFilter; // Only show reviews matching the filter
-  });
 
   const columns = React.useMemo(
     () => [
@@ -335,7 +331,7 @@ const ReviewCategories = () => {
   } = useTable(
     {
       columns,
-      data: filteredReviews, // Use filtered reviews
+      data: reviews,
     },
     useGlobalFilter, // Enable global filtering
     useSortBy,
@@ -365,18 +361,6 @@ const ReviewCategories = () => {
             }}
           />
         </Toolbar>
-        <FormControl style={{ minWidth: 200 }}>
-          <InputLabel>Status</InputLabel>
-          <Select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            displayEmpty
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="approved">Approved</MenuItem>
-          </Select>
-        </FormControl>
         <Button variant="contained" color="primary" onClick={handleAddOpen}>
           Add New Review Comment
         </Button>
