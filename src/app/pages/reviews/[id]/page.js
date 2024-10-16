@@ -56,7 +56,7 @@ export default function ReviewDetail() {
 
   const fetchReview = async () => {
     try {
-      const response = await axios.get(`/api/review/${id}`);
+      const response = await axios.get(`/api/reviewbyslug/${id}`);
       setReview(response.data);
     } catch (error) {
       console.error("Error fetching review:", error);
@@ -109,7 +109,8 @@ export default function ReviewDetail() {
     };
 
     try {
-      await axios.post(`/api/comments`, payload, {
+      console.log("Data to be submitted ",payload);
+      await axios.post(`/api/submitcomment`, payload, {
         headers: {
           "Content-Type": "application/json",
         },

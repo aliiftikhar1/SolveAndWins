@@ -7,14 +7,16 @@ export async function POST(request) {
     const data = await request.json();
     const {
       title,
-      url
+      url,
+      slug
     } = data;
 
     // Create a new result entry in the database
     const review = await prisma.review.create({
       data: {
         title,
-      url
+      url,
+      slug
       },
     });
 

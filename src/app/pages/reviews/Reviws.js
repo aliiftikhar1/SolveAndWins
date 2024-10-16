@@ -48,7 +48,7 @@ export default function Reviews() {
           <Card
             key={index}
             style={{ width: "300px", cursor: "pointer", position: "relative" }}
-            onClick={() => handleVideoClick(review.id)} // Pass review id for redirection
+            onClick={() => handleVideoClick(review.slug)} // Pass review id for redirection
           >
             {/* Thumbnail */}
             <div style={{ position: "relative" }}>

@@ -226,6 +226,33 @@ const ReviewCategories = () => {
     }
   };
 
+  // Handle status change directly from the table
+  const handleStatusChange = async (review, newStatus) => {
+    // Create an updated record including the new status and other data
+    const updatedRecord = {
+      ...review, // Spread all existing review data
+      status: newStatus, // Update the status field
+    };
+  
+    try {
+      // Send the PUT request with the updated record
+      await axios.put(`/api/comments/${review.id}`, updatedRecord);
+      setSnackbar({
+        open: true,
+        message: "Review updated successfully.",
+        type: "success",
+      });
+      fetchReviews(); // Refresh the reviews list after status change
+    } catch (error) {
+      console.error("Error updating review:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update review.",
+        type: "error",
+      });
+    }
+  };
+
   const columns = React.useMemo(
     () => [
       {
@@ -259,6 +286,17 @@ const ReviewCategories = () => {
       {
         Header: "Status",
         accessor: "status",
+        Cell: ({ row }) => (
+          <FormControl fullWidth>
+            <Select
+              value={row.original.status}
+              onChange={(e) => handleStatusChange(row.original, e.target.value)}
+            >
+              <MenuItem value="pending">Pending</MenuItem>
+              <MenuItem value="approved">Approved</MenuItem>
+            </Select>
+          </FormControl>
+        ),
       },
       {
         Header: "Actions",
@@ -287,7 +325,7 @@ const ReviewCategories = () => {
     page,
     prepareRow,
     state,
-    setGlobalFilter,
+    setGlobalFilter, // Add globalFilter hook to filter data globally
     gotoPage,
     setPageSize,
   } = useTable(
@@ -295,12 +333,12 @@ const ReviewCategories = () => {
       columns,
       data: reviews,
     },
-    useGlobalFilter,
+    useGlobalFilter, // Enable global filtering
     useSortBy,
     usePagination
   );
 
-  const { pageIndex, pageSize, globalFilter } = state;
+  const { pageIndex, pageSize, globalFilter } = state; // Get pagination and filter states
 
   return (
     <div style={{ padding: "20px" }}>
@@ -314,7 +352,7 @@ const ReviewCategories = () => {
         <Toolbar>
           <InputBase
             value={globalFilter || ""}
-            onChange={(e) => setGlobalFilter(e.target.value || undefined)}
+            onChange={(e) => setGlobalFilter(e.target.value || undefined)} // Filter table based on input
             placeholder="Search"
             style={{
               padding: "6px 10px",

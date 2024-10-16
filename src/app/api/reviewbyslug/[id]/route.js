@@ -54,11 +54,11 @@ export async function DELETE(request, { params }) {
 // GET: Retrieve a single result by ID
 export async function GET(request, { params }) {
   console.log(params.id);
-  const  id  = parseInt(params.id); // Result ID
+  const  id  = params.id
   console.log("id",id);
   try {
-    const result = await prisma.review.findUnique({
-      where: { id: id },
+    const result = await prisma.review.findMany({
+      where: { slug: id },
     });
 
     if (!result) {
@@ -68,8 +68,8 @@ export async function GET(request, { params }) {
       );
     }
 
-    console.log("Result of user:",params,"is", result);
-    return NextResponse.json(result);
+    console.log("Result of user: ",params," is ", result);
+    return NextResponse.json(result[0]);
   } catch (error) {
     console.error("Error Fetching Result:", error);
     return NextResponse.json(

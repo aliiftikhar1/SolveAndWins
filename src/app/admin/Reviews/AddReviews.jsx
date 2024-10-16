@@ -45,6 +45,7 @@ const AddVideo = () => {
   const [formData, setFormData] = useState({
     title: "",
     url: "",
+    slug: "", // Added slug field
   });
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const AddVideo = () => {
     setFormData({
       title: "",
       url: "",
+      slug: "", // Reset slug field
     });
     setOpenAddDialog(true);
   };
@@ -98,9 +100,9 @@ const AddVideo = () => {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url } = formData;
+    const { title, url, slug } = formData;
 
-    if (!title || !url) {
+    if (!title || !url || !slug) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -133,6 +135,7 @@ const AddVideo = () => {
     setFormData({
       title: video.title,
       url: video.url,
+      slug: video.slug, // Set slug field when editing
     });
     setOpenEditDialog(true);
   };
@@ -145,9 +148,9 @@ const AddVideo = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url } = formData;
+    const { title, url, slug } = formData;
 
-    if (!title || !url) {
+    if (!title || !url || !slug) {
       setSnackbar({
         open: true,
         message: "Please fill in all required fields.",
@@ -237,6 +240,7 @@ const AddVideo = () => {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Title</TableCell>
+              <TableCell>Slug</TableCell> {/* Added Slug Column */}
               <TableCell>URL</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -248,6 +252,7 @@ const AddVideo = () => {
                 <TableRow key={video.id}>
                   <TableCell>{video.id}</TableCell>
                   <TableCell>{video.title}</TableCell>
+                  <TableCell>{video.slug}</TableCell> {/* Display Slug */}
                   <TableCell>
                     <a
                       href={video.url}
@@ -336,6 +341,15 @@ const AddVideo = () => {
               required
               margin="normal"
             />
+            <TextField
+              label="Slug"
+              name="slug"
+              value={formData.slug}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              margin="normal"
+            />
             <DialogActions>
               <Button onClick={handleAddClose} color="primary">
                 Cancel
@@ -385,6 +399,15 @@ const AddVideo = () => {
               label="YouTube Video Link"
               name="url"
               value={formData.url}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              margin="normal"
+            />
+            <TextField
+              label="Slug"
+              name="slug"
+              value={formData.slug}
               onChange={handleInputChange}
               fullWidth
               required
