@@ -64,12 +64,15 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b-2 text-black px-4 py-4">
+    <header className="bg-white border-b-2 text-black px-4 ">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-7">
+          <a href='/'>
+        <img src='/logo/solveandwinlogo.jpg' className='h-16 w-16'></img>
+        </a>
           <a href="/">
-            <span className="text-xl font-bold">SolveAndWins</span>
+            <span className="text-2xl font-extrabold">SolveAndWins</span>
           </a>
         </div>
 

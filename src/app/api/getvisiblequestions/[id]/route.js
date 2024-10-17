@@ -14,8 +14,6 @@ export async function PUT(request, { params }) {
       op3,
       op4,
       key,
-      status,
-      incompetition,
     } = data;
 
     console.log(data);
@@ -30,8 +28,6 @@ export async function PUT(request, { params }) {
         op3,
         op4,
         key,
-        status,
-        incompetition,
         updatedAt: new Date(),
       },
     });
@@ -62,15 +58,25 @@ export async function DELETE(request, { params }) {
 export async function GET(request, { params }) {
   const { id } = params;
   try {
-    const question = await prisma.question.findUnique({
-      where: { id: parseInt(id, 10) },
-      include: {
-        competition: true, // Include the related competition details
-      },
-    });
+    const questions = await prisma.$queryRaw`
+    SELECT id,qText
+    FROM Question
+    WHERE competitionId = ${parseInt(id, 10)} AND status = "Show"
+  `;
 
-    console.log("Question:", question);
-    return NextResponse.json(question);
+  if (!questions || questions.length === 0) {
+    return NextResponse.json({ message: "No questions found" }, { status: 404 });
+  }
+
+    // const question = await prisma.question.findMany({
+    //   where: { competitionId: parseInt(id, 10), status: "Show" },
+    //   include: {
+    //     competition: true, 
+    //   },
+    // });
+
+    console.log("Question:", questions);
+    return NextResponse.json(questions);
   } catch (error) {
     console.error("Error Fetching Question:", error);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

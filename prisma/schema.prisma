@@ -44,6 +44,8 @@ model Question {
   op2           String
   op3           String
   op4           String
+  status        String?
+  incompetition String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)

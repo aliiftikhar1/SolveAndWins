@@ -40,7 +40,7 @@ export default function SingleCompetition() {
   useEffect(() => {
     const fetchDummyQuestions = async () => {
       try {
-        const response = await fetch(`/api/dummyquestions/${id}`);
+        const response = await fetch(`/api/getvisiblequestions/${id}`);
         const data = await response.json();
 
         if (!response.ok) {

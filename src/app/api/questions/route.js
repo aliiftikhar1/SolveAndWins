@@ -13,6 +13,8 @@ export async function POST(request) {
       op3,
       op4,
       key,
+      status,
+      incompetition,
     } = data;
 
     // Create a new question entry in the database
@@ -25,6 +27,8 @@ export async function POST(request) {
         op3,
         op4,
         key,
+        status,
+        incompetition,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

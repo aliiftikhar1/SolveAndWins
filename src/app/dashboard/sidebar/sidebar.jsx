@@ -133,18 +133,20 @@ const Sidebar = () => {
       icon: <FaQuestion className="h-5 w-5" />, // Use FaQuestion for Questions
       roles: ["admin"], // Only admin can see this
     },
-    {
-      title: "Dummy Questions",
-      path: "/admin/DummyQuestions",
-      icon: <FaQuestion className="h-5 w-5" />, // Use FaQuestion for Dummy Questions
-      roles: ["admin"], // Only admin can see this
-    },
+    // {
+    //   title: "Dummy Questions",
+    //   path: "/admin/DummyQuestions",
+    //   icon: <FaQuestion className="h-5 w-5" />, // Use FaQuestion for Dummy Questions
+    //   roles: ["admin"], // Only admin can see this
+    // },
   ];
 
   return (
     <div className="bg-gray-700 text-white w-full min-h-screen flex flex-col">
       {/* Profile Section */}
-      <div className="p-6 text-center">
+      <div className="p-6 text-center flex flex-col justify-center items-center">
+        <img src='/logo/solveandwinlogo.jpg' className='rounded-full w-32 h-32'>
+        </img>
         <h1 className='text-3xl font-extrabold'>
           SolveAndWins
         </h1>

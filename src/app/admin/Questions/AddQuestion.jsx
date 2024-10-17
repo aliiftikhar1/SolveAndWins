@@ -33,15 +33,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 
 const AddQuestion = () => {
-  const [competitions, setCompetitions] = useState([]); // State to store fetched competitions
+  const [competitions, setCompetitions] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCompetition, setSelectedCompetition] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [editingQuestion, setEditingQuestion] = useState(null); // Store the question being edited
+  const [editingQuestion, setEditingQuestion] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -56,9 +57,10 @@ const AddQuestion = () => {
     op3: "",
     op4: "",
     key: "",
+    status: "Show", // Set default value
+    incompetition: "Yes", // Set default value
   });
 
-  // Generate the options list for the "Correct Option (Key)" dropdown
   const optionList = useMemo(
     () =>
       [
@@ -70,22 +72,6 @@ const AddQuestion = () => {
     [formData.op1, formData.op2, formData.op3, formData.op4]
   );
 
-  // Reset the key if it doesn't match any current options
-  useEffect(() => {
-    if (
-      formData.key &&
-      !optionList.some((option) => option.value === formData.key)
-    ) {
-      setFormData((prevData) => {
-        if (prevData.key !== "") {
-          return { ...prevData, key: "" };
-        } else {
-          return prevData; // No update needed
-        }
-      });
-    }
-  }, [optionList, formData.key]);
-
   useEffect(() => {
     fetchCompetitions();
     fetchQuestions();
@@ -94,7 +80,7 @@ const AddQuestion = () => {
   const fetchCompetitions = async () => {
     try {
       const response = await axios.get("/api/competition");
-      setCompetitions(response.data); // Set the fetched competitions
+      setCompetitions(response.data);
     } catch (error) {
       console.error("Error fetching competitions:", error);
       setSnackbar({
@@ -120,24 +106,41 @@ const AddQuestion = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-    const filtered = questions.filter((question) =>
-      question.qText.toLowerCase().includes(query)
-    );
+  useEffect(() => {
+    let filtered = questions;
+    if (searchQuery) {
+      filtered = filtered.filter((question) =>
+        question.qText.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    if (selectedCompetition) {
+      filtered = filtered.filter(
+        (question) => question.competitionId === parseInt(selectedCompetition)
+      );
+    }
+
     setFilteredQuestions(filtered);
+  }, [searchQuery, selectedCompetition, questions]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCompetitionChange = (e) => {
+    setSelectedCompetition(e.target.value);
   };
 
   const handleAddOpen = () => {
     setFormData({
-      competitionId: "",
+      competitionId: selectedCompetition || "",
       qText: "",
       op1: "",
       op2: "",
       op3: "",
       op4: "",
       key: "",
+      status: "Show", // New field
+      incompetition: "Yes", // New field
     });
     setOpenAddDialog(true);
   };
@@ -154,34 +157,45 @@ const AddQuestion = () => {
     }));
   };
 
-  const handleAddSubmit = async (e) => {
-    e.preventDefault();
-
-    const { competitionId, qText, op1, op2, op3, op4, key } = formData;
-
-    if (!competitionId || !qText || !op1 || !op2 || !op3 || !op4 || !key) {
-      setSnackbar({
-        open: true,
-        message: "Please fill in all required fields.",
-        type: "error",
-      });
-      return;
-    }
-
+  const handleStatusChange = async (question, newStatus) => {
     try {
-      await axios.post("/api/questions", formData);
+      await axios.put(`/api/questions/${question.id}`, {
+        ...question,
+        status: newStatus,
+      });
       setSnackbar({
         open: true,
-        message: "Question added successfully.",
+        message: "Status updated successfully.",
         type: "success",
       });
       fetchQuestions();
-      handleAddClose();
     } catch (error) {
-      console.error("Error adding question:", error);
+      console.error("Error updating status:", error);
       setSnackbar({
         open: true,
-        message: "Failed to add question.",
+        message: "Failed to update status.",
+        type: "error",
+      });
+    }
+  };
+
+  const handleInCompetitionChange = async (question, newInCompetition) => {
+    try {
+      await axios.put(`/api/questions/${question.id}`, {
+        ...question,
+        incompetition: newInCompetition,
+      });
+      setSnackbar({
+        open: true,
+        message: "In Competition updated successfully.",
+        type: "success",
+      });
+      fetchQuestions();
+    } catch (error) {
+      console.error("Error updating in competition:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to update in competition.",
         type: "error",
       });
     }
@@ -197,6 +211,8 @@ const AddQuestion = () => {
       op3: question.op3,
       op4: question.op4,
       key: question.key,
+      status: question.status,
+      incompetition: question.incompetition,
     });
     setOpenEditDialog(true);
   };
@@ -208,8 +224,7 @@ const AddQuestion = () => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-
-    const { competitionId, qText, op1, op2, op3, op4, key } = formData;
+    const { competitionId, qText, op1, op2, op3, op4, key, status, incompetition } = formData;
 
     if (!competitionId || !qText || !op1 || !op2 || !op3 || !op4 || !key) {
       setSnackbar({
@@ -257,6 +272,37 @@ const AddQuestion = () => {
       });
     }
   };
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    const { competitionId, qText, op1, op2, op3, op4, key, status, incompetition } = formData;
+
+    if (!competitionId || !qText || !op1 || !op2 || !op3 || !op4 || !key) {
+      setSnackbar({
+        open: true,
+        message: "Please fill in all required fields.",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      await axios.post("/api/questions", formData);
+      setSnackbar({
+        open: true,
+        message: "Question added successfully.",
+        type: "success",
+      });
+      fetchQuestions();
+      handleAddClose();
+    } catch (error) {
+      console.error("Error adding question:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to add question.",
+        type: "error",
+      });
+    }
+  };
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -294,6 +340,26 @@ const AddQuestion = () => {
         </Button>
       </div>
 
+      {/* Competition Select Filter */}
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="competition-filter-label">Filter by Competition</InputLabel>
+        <Select
+          labelId="competition-filter-label"
+          value={selectedCompetition}
+          onChange={handleCompetitionChange}
+          label="Filter by Competition"
+        >
+          <MenuItem value="">
+            <em>All Competitions</em>
+          </MenuItem>
+          {competitions.map((competition) => (
+            <MenuItem key={competition.id} value={competition.id}>
+              {competition.title}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       {/* Table displaying questions */}
       <TableContainer component={Paper}>
         <Table>
@@ -304,6 +370,8 @@ const AddQuestion = () => {
               <TableCell>Competition</TableCell>
               <TableCell>Options</TableCell>
               <TableCell>Correct Option (Key)</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>In Competition</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -319,6 +387,37 @@ const AddQuestion = () => {
                     {question.op1}, {question.op2}, {question.op3}, {question.op4}
                   </TableCell>
                   <TableCell>{question.key}</TableCell>
+
+                  {/* Status Dropdown */}
+                  <TableCell>
+                    <FormControl fullWidth>
+                      <Select
+                        value={question.status}
+                        onChange={(e) =>
+                          handleStatusChange(question, e.target.value)
+                        }
+                      >
+                        <MenuItem value="Show">Show</MenuItem>
+                        <MenuItem value="Hide">Hide</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+
+                  {/* In Competition Dropdown */}
+                  <TableCell>
+                    <FormControl fullWidth>
+                      <Select
+                        value={question.incompetition}
+                        onChange={(e) =>
+                          handleInCompetitionChange(question, e.target.value)
+                        }
+                      >
+                        <MenuItem value="Yes">Yes</MenuItem>
+                        <MenuItem value="No">No</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+
                   <TableCell>
                     <div style={{ display: "flex", gap: "10px" }}>
                       <FaUserEdit
@@ -465,6 +564,36 @@ const AddQuestion = () => {
               </Select>
             </FormControl>
 
+            {/* Status Dropdown */}
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="status-label">Status</InputLabel>
+              <Select
+                labelId="status-label"
+                name="status"
+                value={formData.status || ""}
+                onChange={handleInputChange}
+                label="Status"
+              >
+                <MenuItem value="Show">Show</MenuItem>
+                <MenuItem value="Hide">Hide</MenuItem>
+              </Select>
+            </FormControl>
+
+            {/* In Competition Dropdown */}
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="incompetition-label">In Competition</InputLabel>
+              <Select
+                labelId="incompetition-label"
+                name="incompetition"
+                value={formData.incompetition || ""}
+                onChange={handleInputChange}
+                label="In Competition"
+              >
+                <MenuItem value="Yes">Yes</MenuItem>
+                <MenuItem value="No">No</MenuItem>
+              </Select>
+            </FormControl>
+
             <DialogActions>
               <Button onClick={handleAddClose} color="primary">
                 Cancel
@@ -583,6 +712,35 @@ const AddQuestion = () => {
                     {option.label}
                   </MenuItem>
                 ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="status-label">Status</InputLabel>
+              <Select
+                labelId="status-label"
+                name="status"
+                value={formData.status || ""}
+                onChange={handleInputChange}
+                label="Status"
+              >
+                <MenuItem value="Show">Show</MenuItem>
+                <MenuItem value="Hide">Hide</MenuItem>
+              </Select>
+            </FormControl>
+
+            {/* In Competition Dropdown */}
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="incompetition-label">In Competition</InputLabel>
+              <Select
+                labelId="incompetition-label"
+                name="incompetition"
+                value={formData.incompetition || ""}
+                onChange={handleInputChange}
+                label="In Competition"
+              >
+                <MenuItem value="Yes">Yes</MenuItem>
+                <MenuItem value="No">No</MenuItem>
               </Select>
             </FormControl>
 

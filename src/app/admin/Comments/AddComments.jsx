@@ -339,7 +339,7 @@ const ReviewCategories = () => {
   );
 
   const { pageIndex, pageSize, globalFilter } = state; // Get pagination and filter states
-
+ 
   return (
     <div style={{ padding: "20px" }}>
       <div
@@ -361,11 +361,31 @@ const ReviewCategories = () => {
             }}
           />
         </Toolbar>
+       
         <Button variant="contained" color="primary" onClick={handleAddOpen}>
           Add New Review Comment
         </Button>
       </div>
+ {/* select option for filtering */}
 
+ <FormControl fullWidth margin="normal">
+              <InputLabel>User</InputLabel>
+              <Select
+                name="filter"
+                value={globalFilter || ""}
+                onChange={(e) => setGlobalFilter(e.target.value || undefined)}
+                required
+              >
+                  <MenuItem value="Pending">
+                    Pending
+                  </MenuItem>
+                   <MenuItem value="Approved">
+                   Approved
+                 </MenuItem>
+               
+              </Select>
+            </FormControl>
+            {/* select option ends */}
       <TableContainer component={Paper}>
         <Table {...getTableProps()}>
           <TableHead>
