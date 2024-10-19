@@ -66,6 +66,7 @@ const UserLoginForm = () => {
   // Upload image to the API and return the URL
   const uploadImage = async (base64Image) => {
     try {
+      console.log("Image is going to upload...");
       const response = await axios.post(
         "https://solveandwins.advanceaitool.com/uploadImage.php",
         { image: base64Image }
@@ -91,7 +92,8 @@ const UserLoginForm = () => {
     try {
       // Upload image and get the image URL
       const imageUrl = await uploadImage(imageBase64);
-
+      console.log(imageUrl);
+      console.log(formData);
       // Send data as JSON
       const res = await fetch('/api/user', {
         method: 'POST',
@@ -132,13 +134,24 @@ const UserLoginForm = () => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setImageBase64(reader.result.split(',')[1]); // Get base64 string without metadata
+      setImageBase64(reader.result); // Get base64 string without metadata
     };
 
     if (file) {
       reader.readAsDataURL(file); // Convert file to base64
     }
   };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImagePreviewUrl(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
