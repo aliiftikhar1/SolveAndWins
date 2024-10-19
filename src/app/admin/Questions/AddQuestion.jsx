@@ -365,6 +365,7 @@ const AddQuestion = () => {
         <Table>
           <TableHead>
             <TableRow>
+            <TableCell>No.</TableCell>
               <TableCell>ID</TableCell>
               <TableCell>Question Text</TableCell>
               <TableCell>Competition</TableCell>
@@ -378,8 +379,9 @@ const AddQuestion = () => {
           <TableBody>
             {filteredQuestions
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((question) => (
+              .map((question, key) => (
                 <TableRow key={question.id}>
+                  <TableCell>{key +1 }</TableCell>
                   <TableCell>{question.id}</TableCell>
                   <TableCell>{question.qText}</TableCell>
                   <TableCell>{question.competition.title}</TableCell>

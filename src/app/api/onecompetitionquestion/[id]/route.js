@@ -61,7 +61,7 @@ export async function GET(request, { params }) {
     const question = await prisma.question.findMany({
       where: { competitionId: parseInt(id, 10), incompetition: "Yes" },
       include: {
-        competition: true, // Include the related competition details
+        competition: true, 
       },
     });
 

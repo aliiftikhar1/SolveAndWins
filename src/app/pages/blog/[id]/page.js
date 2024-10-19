@@ -3,8 +3,8 @@ import BlogDetailPage from "./mainpage"; // Ensure you are importing the correct
 import UserLayout from "../../../components/userlayout";
 
 export async function generateMetadata({ params }) {
-  // const baseUrl = 'http://solveandwins.com';
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = 'http://solveandwins.com';
+  // const baseUrl = 'http://localhost:3000';
   try {
     const res = await fetch(`${baseUrl}/api/blog/${params.id}`);
     

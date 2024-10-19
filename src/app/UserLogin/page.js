@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import axios from 'axios'; // For handling image upload
 
 const UserLoginForm = () => {
   const router = useRouter();
@@ -25,11 +26,13 @@ const UserLoginForm = () => {
     dob: '',
     city: '',
     province: '',
-    // fbProfile: '',
-    // tiktok: '',
     whatsappNo: '',
     country: '',
+    image: '', // New field for image URL
   });
+
+  // Image file and base64 state
+  const [imageBase64, setImageBase64] = useState('');
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -60,6 +63,21 @@ const UserLoginForm = () => {
     }
   };
 
+  // Upload image to the API and return the URL
+  const uploadImage = async (base64Image) => {
+    try {
+      const response = await axios.post(
+        "https://solveandwins.advanceaitool.com/uploadImage.php",
+        { image: base64Image }
+      );
+      console.log("Image has been uploaded: ", response.data.image_url);
+      return response.data.image_url; // Extract image URL
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      throw new Error("Image upload failed");
+    }
+  };
+
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setStatus('Registering...');
@@ -70,35 +88,55 @@ const UserLoginForm = () => {
       return;
     }
 
-    // Send data as JSON
-    const res = await fetch('/api/user', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        fullname: formData.fullname,
-        email: formData.email,
-        password: formData.password,
-        address: formData.address,
-        fathername: formData.fathername,
-        education: formData.education,
-        institute: formData.institute,
-        dob: formData.dob,
-        city: formData.city,
-        province: formData.province,
-        // fbProfile: formData.fbProfile,
-        // tiktok: formData.tiktok,
-        whatsappNo: formData.whatsappNo,
-        country: formData.country,
-      }),
-    });
+    try {
+      // Upload image and get the image URL
+      const imageUrl = await uploadImage(imageBase64);
 
-    const data = await res.json();
+      // Send data as JSON
+      const res = await fetch('/api/user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullname: formData.fullname,
+          email: formData.email,
+          password: formData.password,
+          address: formData.address,
+          fathername: formData.fathername,
+          education: formData.education,
+          institute: formData.institute,
+          dob: formData.dob,
+          city: formData.city,
+          province: formData.province,
+          whatsappNo: formData.whatsappNo,
+          country: formData.country,
+          image: imageUrl, // Include the uploaded image URL
+        }),
+      });
 
-    if (res.ok) {
-      setStatus('Registration successful');
-      setIsLogin(true); // Switch back to login form after successful registration
-    } else {
-      setStatus(data.message || 'Error registering');
+      const data = await res.json();
+
+      if (res.ok) {
+        setStatus('Registration successful');
+        setIsLogin(true); // Switch back to login form after successful registration
+      } else {
+        setStatus(data.message || 'Error registering');
+      }
+    } catch (error) {
+      setStatus('Image upload failed');
+    }
+  };
+
+  // Handle image file selection and convert to base64
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImageBase64(reader.result.split(',')[1]); // Get base64 string without metadata
+    };
+
+    if (file) {
+      reader.readAsDataURL(file); // Convert file to base64
     }
   };
 
@@ -143,11 +181,6 @@ const UserLoginForm = () => {
                 />
               </div>
             </div>
-            {/* <div className=" text-right">
-              <a href="#" className="text-blue-500 hover:underline">
-                Forgot password?
-              </a>
-            </div> */}
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -196,8 +229,8 @@ const UserLoginForm = () => {
                   required
                 />
               </div>
-               {/* WhatsApp Number */}
-               <div className=" col-span-2">
+              {/* WhatsApp Number */}
+              <div className=" col-span-2">
                 <label className="block text-gray-700">WhatsApp Number</label>
                 <input
                   type="tel"
@@ -293,8 +326,8 @@ const UserLoginForm = () => {
                   onChange={handleInputChange}
                 />
               </div>
-               {/* Country */}
-               <div className="">
+              {/* Country */}
+              <div className="">
                 <label className="block text-gray-700">Country</label>
                 <input
                   type="text"
@@ -305,8 +338,8 @@ const UserLoginForm = () => {
                   onChange={handleInputChange}
                 />
               </div>
-                {/* Province */}
-                <div className="">
+              {/* Province */}
+              <div className="">
                 <label className="block text-gray-700">Province</label>
                 <input
                   type="text"
@@ -329,32 +362,16 @@ const UserLoginForm = () => {
                   onChange={handleInputChange}
                 />
               </div>
-             
-              {/* Facebook Profile */}
-              {/* <div className=" col-span-2">
-                <label className="block text-gray-700">Facebook Profile</label>
+              {/* Image Upload */}
+              <div className="col-span-2">
+                <label className="block text-gray-700">Profile Image</label>
                 <input
-                  type="url"
-                  name="fbProfile"
+                  type="file"
+                  accept="image/*"
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Facebook Profile URL"
-                  value={formData.fbProfile}
-                  onChange={handleInputChange}
+                  onChange={handleImageChange}
                 />
-              </div> */}
-              {/* TikTok */}
-              {/* <div className=" col-span-2">
-                <label className="block text-gray-700">TikTok</label>
-                <input
-                  type="text"
-                  name="tiktok"
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="TikTok Username"
-                  value={formData.tiktok}
-                  onChange={handleInputChange}
-                />
-              </div> */}
-             
+              </div>
             </div>
             <button
               type="submit"
