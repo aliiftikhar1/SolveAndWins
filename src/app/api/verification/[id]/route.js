@@ -8,12 +8,14 @@ export async function GET(request, { params }) {
     console.log("Token:", token);
 
     if (!token) {
+      console.log("Token is not available!!!!");
       return NextResponse.redirect('/verification/error');
     }
 
     const verificationNumber = parseInt(token, 10);
 
     if (isNaN(verificationNumber)) {
+      console.log("Invalid verification number");
       return NextResponse.redirect('/verification/error');
     }
 
@@ -29,6 +31,7 @@ export async function GET(request, { params }) {
     });
 
     if (!verification) {
+      console.log("Error while while verifying the token!!");
       return NextResponse.redirect('/verification/error');
     }
 
