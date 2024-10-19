@@ -142,7 +142,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="bg-gray-700 text-white w-full min-h-screen flex flex-col">
+    <div className="bg-gray-700 text-white h-screen w-full flex flex-col">
       {/* Profile Section */}
       <div className="p-6 text-center flex flex-col justify-center items-center">
         <img src='/logo/solveandwinlogo.jpg' className='rounded-full w-32 h-32'>
@@ -155,41 +155,43 @@ const Sidebar = () => {
       </div>
 
       {/* Menu Section */}
-      <div className="flex-1 p-4 border-t border-gray-600">
-        <ul className="mt-6 space-y-3">
-          {/* Dynamic Menu Items */}
-          {menuItems.map(
-            (item) =>
-              item.roles.includes(userRole) && (
-                <li key={item.title}>
-                  <Link href={item.path} passHref>
-                    <button
-                      className="flex items-center p-3 hover:bg-blue-700 rounded-md w-full text-left"
-                      aria-label={item.title}
-                    >
-                      {item.icon}
-                      <span className="ml-3 text-sm font-medium">
-                        {item.title}
-                      </span>
-                    </button>
-                  </Link>
-                </li>
-              )
-          )}
-
-          {/* Logout Button */}
-          <li className="mt-6">
-            <button
-              className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none text-left"
-              onClick={handleLogout}
-              aria-label="Logout"
-            >
-              <FaSignOutAlt className="h-5 w-5" />
-              <span className="ml-3 text-sm font-medium">Logout</span>
-            </button>
+    {/* Menu Section */}
+<div className="flex-1 p-4 border-t border-gray-600 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-gray-600 scrollbar-track-gray-300">
+  <ul className="mt-6 space-y-3">
+    {/* Dynamic Menu Items */}
+    {menuItems.map(
+      (item) =>
+        item.roles.includes(userRole) && (
+          <li key={item.title}>
+            <Link href={item.path} passHref>
+              <button
+                className="flex items-center p-3 hover:bg-blue-700 rounded-md w-full text-left"
+                aria-label={item.title}
+              >
+                {item.icon}
+                <span className="ml-3 text-sm font-medium">
+                  {item.title}
+                </span>
+              </button>
+            </Link>
           </li>
-        </ul>
-      </div>
+        )
+    )}
+
+    {/* Logout Button */}
+    <li className="mt-6">
+      <button
+        className="flex items-center w-full p-3 hover:bg-blue-700 rounded-md focus:outline-none text-left"
+        onClick={handleLogout}
+        aria-label="Logout"
+      >
+        <FaSignOutAlt className="h-5 w-5" />
+        <span className="ml-3 text-sm font-medium">Logout</span>
+      </button>
+    </li>
+  </ul>
+</div>
+
     </div>
   );
 };

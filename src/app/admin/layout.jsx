@@ -24,14 +24,14 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div className="flex w-full min-h-screen bg-white">
+    <div className="flex w-full h-screen  bg-white">
       <div className="flex w-[350px]">
         <ToastContainer />
         <Sidebar />
       </div>
       <div className="flex flex-col w-full flex-grow">
         <Navbar />
-        <div className="flex-grow p-4">
+        <div className="flex-grow h-full overflow-y-auto p-4">
           {children}
         </div>
       </div>

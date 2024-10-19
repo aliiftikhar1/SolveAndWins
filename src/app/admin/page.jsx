@@ -15,7 +15,7 @@ const Dashboard = () => {
         </div>
         {/* <Transactions />
         <Chart /> */}
-        <div className="h-screen flex justify-center items-center">
+        <div className="h-full flex justify-center items-center">
 
           <h1 className="text-2xl font-bold">
             Admin Dashboard
