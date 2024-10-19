@@ -57,8 +57,8 @@ const AddQuestion = () => {
     op3: "",
     op4: "",
     key: "",
-    status: "Show", // Set default value
-    incompetition: "Yes", // Set default value
+    status: "Hide", 
+    incompetition: "No",
   });
 
   const optionList = useMemo(
@@ -139,8 +139,8 @@ const AddQuestion = () => {
       op3: "",
       op4: "",
       key: "",
-      status: "Show", // New field
-      incompetition: "Yes", // New field
+      status: "Hide", // New field
+      incompetition: "No", // New field
     });
     setOpenAddDialog(true);
   };
