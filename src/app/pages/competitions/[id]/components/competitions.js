@@ -77,13 +77,13 @@ export default function SingleCompetition() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-        <p className="text-2xl text-white">Error: {error}</p>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+  //       <p className="text-2xl text-white">Error: {error}</p>
+  //     </div>
+  //   );
+  // }
 
   if (!competition) {
     return (
