@@ -9,14 +9,14 @@ export async function GET(request, { params }) {
 
     if (!token) {
       console.log("Token is not available!!!!");
-      return NextResponse.redirect('/verification/error');
+      return NextResponse.redirect(`${process.env.BASE_URL}/verification/error`);
     }
 
     const verificationNumber = parseInt(token, 10);
 
     if (isNaN(verificationNumber)) {
       console.log("Invalid verification number");
-      return NextResponse.redirect('/verification/error');
+      return NextResponse.redirect(`${process.env.BASE_URL}/verification/error`);
     }
 
     // Find the verification record with the given token and not yet verified
@@ -32,7 +32,7 @@ export async function GET(request, { params }) {
 
     if (!verification) {
       console.log("Error while while verifying the token!!");
-      return NextResponse.redirect('/verification/error');
+      return NextResponse.redirect(`${process.env.BASE_URL}/verification/error`);
     }
 
     // Update the verification record to set verified to true
@@ -56,9 +56,9 @@ export async function GET(request, { params }) {
     });
 
     // Redirect to success page
-    return NextResponse.redirect('/verification/success');
+    return NextResponse.redirect(`${process.env.BASE_URL}/verification/success`);
   } catch (error) {
     console.error('Error verifying email:', error);
-    return NextResponse.redirect('/verification/error');
+    return NextResponse.redirect(`${process.env.BASE_URL}/verification/error`);
   }
 }
