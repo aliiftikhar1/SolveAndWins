@@ -5,23 +5,23 @@ import { useRouter } from 'next/navigation';
 export default function BlogSlider({ blogs }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
-  const [blogsPerView, setBlogsPerView] = useState(4);
+  const [blogsPerView, setBlogsPerView] = useState(1); // Start with 1 blog per view for mobile
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        setBlogsPerView(4); // Large screens
+        setBlogsPerView(4); // Large screens show 4 blogs
       } else if (window.innerWidth >= 768) {
-        setBlogsPerView(2); // Medium screens
+        setBlogsPerView(2); // Medium screens show 2 blogs
       } else {
-        setBlogsPerView(1); // Small screens
+        setBlogsPerView(1); // Small screens show 1 blog
       }
     };
 
-    handleResize(); // Set initial value
-    window.addEventListener('resize', handleResize); // Listen for resize
+    handleResize(); // Set the initial value based on the current window size
+    window.addEventListener('resize', handleResize); // Listen for screen resizing
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize); // Cleanup
   }, []);
 
   const handlePrevious = () => {
@@ -46,13 +46,13 @@ export default function BlogSlider({ blogs }) {
         onClick={handlePrevious}
         className="text-white p-2 absolute z-40 bg-yellow-400 left-5 rounded-full hover:scale-110 transition duration-300"
       >
-        <span className="text-white font-bold hover:scale-110">&#10094;</span>
+        <span className="text-white font-bold">&#10094;</span>
       </button>
       <button
         onClick={handleNext}
         className="text-white p-2 absolute z-40 bg-yellow-400 right-5 rounded-full hover:scale-110 transition duration-300"
       >
-        <span className="text-white font-bold hover:scale-110">&#10095;</span>
+        <span className="text-white font-bold">&#10095;</span>
       </button>
       <div className="relative overflow-hidden rounded-lg">
         <div
@@ -63,7 +63,7 @@ export default function BlogSlider({ blogs }) {
             <div
               key={index}
               className="cursor-pointer m-4"
-              style={{ width: blogsPerView === 1 ? '100%' : blogsPerView === 2 ? '48%' : '300px', height: blogsPerView === 1 ? '350px' : '400px' }} // Adjust width and height based on screen size
+              style={{ width: blogsPerView === 1 ? '100%' : blogsPerView === 2 ? '48%' : '300px', height: '400px' }} // Adjust width based on screen size
               onClick={() => handleBlogClick(blog)}
             >
               <div className="bg-white rounded-lg hover:shadow-lg hover:shadow-white border-2 hover:border-gray-600 border-gray-500 transition duration-300 transform hover:-translate-y-2 h-full flex flex-col">
@@ -82,8 +82,9 @@ export default function BlogSlider({ blogs }) {
                     className="text-gray-700 text-xs md:text-sm overflow-hidden text-ellipsis"
                     style={{
                       display: '-webkit-box',
-                      WebkitLineClamp: 3, // Limit to 3 lines
+                      WebkitLineClamp: 3, // Limit description to 3 lines
                       WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden', // Ensure overflow is hidden
                     }}
                     dangerouslySetInnerHTML={{ __html: blog.description }}
                   />
