@@ -89,6 +89,11 @@ const UserLoginForm = () => {
       return;
     }
 
+    if(!imageUrl){
+      setStatus("Please select your own image for registeration!");
+      return;
+    }
+
     try {
       // Upload image and get the image URL
       const imageUrl = await uploadImage(imageBase64);
@@ -259,6 +264,7 @@ const UserLoginForm = () => {
                   placeholder="WhatsApp Number"
                   value={formData.whatsappNo}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Password */}
@@ -297,6 +303,7 @@ const UserLoginForm = () => {
                   placeholder="Address"
                   value={formData.address}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Father's Name */}
@@ -309,6 +316,7 @@ const UserLoginForm = () => {
                   placeholder="Father's Name"
                   value={formData.fathername}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Education */}
@@ -321,6 +329,7 @@ const UserLoginForm = () => {
                   placeholder="Education"
                   value={formData.education}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Institute */}
@@ -333,6 +342,7 @@ const UserLoginForm = () => {
                   placeholder="Institute"
                   value={formData.institute}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Date of Birth */}
@@ -344,6 +354,7 @@ const UserLoginForm = () => {
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={formData.dob}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Country */}
@@ -356,6 +367,7 @@ const UserLoginForm = () => {
                   placeholder="Country"
                   value={formData.country}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Province */}
@@ -368,6 +380,7 @@ const UserLoginForm = () => {
                   placeholder="Province"
                   value={formData.province}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* City */}
@@ -380,6 +393,7 @@ const UserLoginForm = () => {
                   placeholder="City"
                   value={formData.city}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
               {/* Image Upload */}
@@ -390,6 +404,7 @@ const UserLoginForm = () => {
                   accept="image/*"
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   onChange={handleImageChange}
+                  required
                 />
               </div>
             </div>
