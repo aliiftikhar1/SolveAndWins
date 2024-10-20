@@ -34,7 +34,7 @@ export default function VerificationSuccess() {
         no-repeat
       `,
     }).then(() => {
-      window.location.href = '/login';
+      window.location.href = '/UserLogin';
     });
   }, []);
 

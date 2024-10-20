@@ -30,7 +30,7 @@ export default function VerificationError() {
         rgba(255,0,0,0.4)
       `,
     }).then(() => {
-      window.location.href = '/verify'; // Redirect to email verification page
+      window.location.href = '/UserLogin'; // Redirect to email verification page
     });
   }, []);
 
