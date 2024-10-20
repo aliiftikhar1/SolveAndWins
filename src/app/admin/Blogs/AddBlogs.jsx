@@ -151,12 +151,12 @@ const AddBlogs = () => {
     e.preventDefault();
     setLoad(true);
     setLoading(true); // Show loading overlay
-
+  
     if (
       !formData.title ||
       !formData.description ||
       !formData.image ||
-      formData.category.length === 0 || // Check for empty categories
+      !formData.category || // No need to check for array, now a single string
       !formData.meta_title ||
       !formData.meta_description ||
       !formData.meta_focusKeyword ||
@@ -170,18 +170,18 @@ const AddBlogs = () => {
       setLoading(false); // Hide loading overlay
       return;
     }
-
+  
     try {
       const imageBase64 = await convertToBase64(formData.image);
       const uploadedImageUrl = await uploadImageToExternalAPI(imageBase64);
-
-      // Convert category array to comma-separated string
+  
+      // No join, directly sending the category as it is
       const blogToSubmit = {
         ...formData,
         image: uploadedImageUrl,
-        category: formData.category.join(", "), // Convert categories to a comma-separated string
+        category: formData.category, // Category is now a single value, not an array
       };
-
+  
       await axios.post(`/api/blog`, blogToSubmit);
       toast.success("Blog has been added successfully!");
       setLoad(false);
@@ -195,29 +195,30 @@ const AddBlogs = () => {
       setLoading(false); // Hide loading overlay
     }
   };
+  
 
   const handleEdit = async (e) => {
     e.preventDefault();
     setLoad(true);
     setLoading(true); // Show loading overlay
-
+  
     try {
       let uploadedImageUrl = editingBlog.image;
-
+  
       if (editingBlog.image instanceof File) {
         const imageBase64 = await convertToBase64(editingBlog.image);
         uploadedImageUrl = await uploadImageToExternalAPI(imageBase64);
       }
-
-      // Convert category array to comma-separated string
+  
+      // No join, directly sending the category as it is
       const blogToUpdate = {
         ...editingBlog,
         image: uploadedImageUrl,
-        category: editingBlog.category.join(", "), // Convert categories to a comma-separated string
+        category: editingBlog.category, // Category is now a single value, not an array
       };
-
+  
       await axios.put(`/api/blog/${editingBlog.id}`, blogToUpdate);
-
+  
       toast.success("Blog has been updated successfully!");
       setLoad(false);
       setLoading(false); // Hide loading overlay
@@ -230,6 +231,7 @@ const AddBlogs = () => {
       setLoading(false); // Hide loading overlay
     }
   };
+  
 
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
