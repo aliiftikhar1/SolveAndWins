@@ -190,9 +190,8 @@ const handleSubmitQuiz = async () => {
   // Handle modal close
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    if (hasSubmitted) {
-      router.push('/pages/competitions'); // Redirect to another page if user has already submitted
-    }
+   router.push('/pages/competitions'); // Redirect to another page if user has already submitted
+    
   };
 
   if (loading) {
