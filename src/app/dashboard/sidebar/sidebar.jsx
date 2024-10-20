@@ -98,6 +98,12 @@ const Sidebar = () => {
       roles: ["admin"], // Only admin can see this
     },
     {
+      title: "Blogs Category Slider",
+      path: "/admin/BlogSlider",
+      icon: <FaBlog className="h-5 w-5" />, // Use FaBlog for Blogs
+      roles: ["admin"], // Only admin can see this
+    },
+    {
       title: "Reviews",
       path: "/admin/Reviews",
       icon: <FaStar className="h-5 w-5" />, // Use FaStar for Reviews
