@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -69,7 +68,7 @@ const Users = () => {
     whatsappNo: "",
     country: "",
     status: "",
-    image: null, // Use 'image' field instead of 'imageFile'
+    image: null, 
   });
 
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null); // For image preview

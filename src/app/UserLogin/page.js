@@ -157,6 +157,9 @@ const UserLoginForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleforgetpassword = () => {
+    router.push('/forgetpassword');
+  }
   return (
     <div className="min-h-screen py-8 flex items-center justify-center bg-gradient-to-r from-blue-900 via-blue-500 to-yellow-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
@@ -193,6 +196,7 @@ const UserLoginForm = () => {
                   required
                 />
               </div>
+              <div className='flex justify-end'><button onClick={handleforgetpassword}>Forget Password ?</button></div>
             </div>
             <button
               type="submit"
