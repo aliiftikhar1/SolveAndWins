@@ -54,30 +54,30 @@ const RelatedBlogs = ({ category, currentBlogId }) => {
     fetchBlogs();
   }, [category, currentBlogId]);
 
- 
 
-  useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const response = await fetch('/api/offers'); // Replace with your API endpoint
-        if (!response.ok) {
-          throw new Error('Failed to fetch offers');
-        }
-        const data = await response.json();
 
-        // Randomly select 4 offers
-        const randomOffers = getRandomSelection(data, 4);
+  // useEffect(() => {
+  //   const fetchOffers = async () => {
+  //     try {
+  //       const response = await fetch('/api/offers'); // Replace with your API endpoint
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch offers');
+  //       }
+  //       const data = await response.json();
 
-        setSimilarOffers(randomOffers);
-      } catch (error) {
-        setErrorOffers(error.message);
-      } finally {
-        setLoadingOffers(false);
-      }
-    };
+  //       // Randomly select 4 offers
+  //       const randomOffers = getRandomSelection(data, 4);
 
-    fetchOffers();
-  }, [category]);
+  //       setSimilarOffers(randomOffers);
+  //     } catch (error) {
+  //       setErrorOffers(error.message);
+  //     } finally {
+  //       setLoadingOffers(false);
+  //     }
+  //   };
+
+  //   fetchOffers();
+  // }, [category]);
 
   const getCompanyLogo = (companyId) => {
     const company = companies.find(company => company.id === companyId);
@@ -108,15 +108,15 @@ const RelatedBlogs = ({ category, currentBlogId }) => {
                   {blog.title}
                 </Link>
                 <div
-    className="text-gray-700 text-sm overflow-hidden text-ellipsis"
-    style={{
-      display: '-webkit-box',
-      WebkitLineClamp: 3, // Limit to 3 lines
-      WebkitBoxOrient: 'vertical',
-    }}
-    dangerouslySetInnerHTML={{ __html: blog.description }}
-  >
-</div>
+                  className="text-gray-700 text-sm overflow-hidden text-ellipsis"
+                  style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3, // Limit to 3 lines
+                    WebkitBoxOrient: 'vertical',
+                  }}
+                  dangerouslySetInnerHTML={{ __html: blog.description }}
+                >
+                </div>
               </div>
             </li>
           ))}
@@ -124,7 +124,7 @@ const RelatedBlogs = ({ category, currentBlogId }) => {
       )}
 
 
-      
+
     </div>
   );
 };
