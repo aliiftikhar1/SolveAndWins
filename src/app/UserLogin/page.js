@@ -168,6 +168,9 @@ const UserLoginForm = () => {
           <h2 className="text-2xl font-bold mt-4">
             {isLogin ? 'User Login' : 'User Registration'}
           </h2>
+          {!isLogin && (
+            <p className='text-red-500 text-center'>Please ensure all the information provided is accurate and complete. In case of wrong information, You will not be eligible to get any type of reward.</p>
+          )}
         </div>
 
         {isLogin ? (
