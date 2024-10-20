@@ -1,5 +1,4 @@
-// pages/blog.js
-'use client'
+'use client';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -12,6 +11,7 @@ export default function Blog() {
   const [featuredPost, setFeaturedPost] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [visibleBlogs, setVisibleBlogs] = useState(6); // Number of blogs to display initially
+  const [sliderCategoryTitle, setSliderCategoryTitle] = useState(''); // Store the blog slider title
 
   useEffect(() => {
     // Fetch blogs from API
@@ -22,7 +22,18 @@ export default function Blog() {
       setFeaturedPost(data[0]);
     };
 
+    // Fetch the blog slider title from the API
+    const fetchBlogSliderTitle = async () => {
+      const response = await fetch('/api/blogslider');
+      const data = await response.json();
+      console.log("Blog slider data",data);
+      if (data && data.title) {
+        setSliderCategoryTitle(data.title); // Set the slider category title
+      }
+    };
+
     fetchBlogs();
+    fetchBlogSliderTitle();
   }, []);
 
   const handleRelatedPostClick = (post) => {
@@ -35,13 +46,17 @@ export default function Blog() {
 
   return (
     <UserLayout>
-      <div className=" bg-white">
+      <div className="bg-white">
         <main className="container mx-auto px-4 py-4">
-          <h1 className='text-4xl font-bold text-center '>Blog Page</h1>
-          {blogs.length > 0 && (
-            <BlogCategorySlider category="Technology" blogs={blogs} />
-          )}
+          <h1 className="text-4xl font-bold text-center">Blog Page</h1>
+          
+          {/* Pass the fetched sliderCategoryTitle to BlogCategorySlider */}
+          {/* {blogs.length > 0 && sliderCategoryTitle && (
+            <BlogCategorySlider category={sliderCategoryTitle} blogs={blogs} />
+          )} */}
+
           <BlogPosts blogs={blogs.slice(0, visibleBlogs)} /> {/* Show only visible blogs */}
+          
           {visibleBlogs < blogs.length && ( // Show "Show More" button only if there are more blogs to show
             <div className="text-center mt-8">
               <button
@@ -53,7 +68,7 @@ export default function Blog() {
             </div>
           )}
         </main>
-        <BlogSection blogs={blogs} title="Fashion" />
+        <BlogSection blogs={blogs} title={sliderCategoryTitle} />
         <Subscribe />
       </div>
     </UserLayout>
@@ -68,7 +83,7 @@ function BlogPosts({ blogs }) {
         {blogs.map((post, index) => (
           <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
             <img
-              src={`https://solveandwins.advanceaitool.com/uploads/${post.image} `}
+              src={`https://solveandwins.advanceaitool.com/uploads/${post.image}`}
               alt={post.title}
               width={400}
               height={300}

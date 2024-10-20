@@ -29,12 +29,12 @@ const BlogDetailPage = ({ id }) => {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (blog && blog.web_slug) {
-      // Use history.replaceState to change the URL without a page reload
-      window.history.replaceState(null, '', `/blog/${blog.web_slug}`);
-    }
-  }, [blog]);
+  // useEffect(() => {
+  //   if (blog && blog.web_slug) {
+  //     // Use history.replaceState to change the URL without a page reload
+  //     window.history.replaceState(null, '', `/blog/${blog.web_slug}`);
+  //   }
+  // }, [blog]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;

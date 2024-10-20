@@ -128,6 +128,7 @@ model Review {
   updatedAt DateTime @updatedAt
 }
 
+
 model Verification {
   id             Int     @id @default(autoincrement())
   userId         Int
@@ -178,4 +179,11 @@ model Comments {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    String   @default("pending") 
+}
+
+model BlogSlider {
+  id        Int     @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
