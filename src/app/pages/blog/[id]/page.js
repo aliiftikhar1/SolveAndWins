@@ -3,12 +3,13 @@ import BlogDetailPage from "./mainpage"; // Ensure you are importing the correct
 import UserLayout from "../../../components/userlayout";
 
 export async function generateMetadata({ params }) {
-  const baseUrl = 'http://solveandwins.com';
+  const baseUrl = 'https://solveandwins.vercel.app';
   // const baseUrl = 'http://localhost:3000';
+  console.log("params are: ",params.id);
   try {
     const res = await fetch(`${baseUrl}/api/blog/${params.id}`);
-    
-    if (!res.ok) {
+    // console.log("response is : ",res);
+    if (!res) {
       console.error(`Error: ${res.status} ${res.statusText}`);
       throw new Error('Failed to fetch blog data');
     }
