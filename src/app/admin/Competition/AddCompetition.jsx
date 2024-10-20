@@ -379,7 +379,7 @@ const Competitions = () => {
         accessor: "status",
       },
       {
-        Header: "Start", // New column for start
+        Header: "Start / End", // New column for start
         accessor: "start",
       },
       {
@@ -635,7 +635,7 @@ const Competitions = () => {
             {/* Start Selector */}
             <TextField
               select
-              label="Start"
+              label="Start /  End"
               name="start"
               value={formData.start}
               onChange={handleInputChange}
@@ -646,8 +646,8 @@ const Competitions = () => {
                 native: true,
               }}
             >
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              <option value="Yes">Start</option>
+              <option value="No">End</option>
             </TextField>
             {/* Image Upload */}
             <div style={{ marginTop: "16px" }}>
@@ -779,7 +779,7 @@ const Competitions = () => {
             {/* Start Selector */}
             <TextField
               select
-              label="Start"
+              label="Start / End"
               name="start"
               value={formData.start}
               onChange={handleInputChange}
@@ -790,8 +790,8 @@ const Competitions = () => {
                 native: true,
               }}
             >
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              <option value="Yes">Start</option>
+              <option value="No">End</option>
             </TextField>
             {/* Image Upload */}
             <div style={{ marginTop: "16px" }}>
