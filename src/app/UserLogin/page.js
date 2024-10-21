@@ -89,7 +89,7 @@ const UserLoginForm = () => {
       return;
     }
 
-    if(!imageUrl){
+    if(!imageBase64){
       setStatus("Please select your own image for registeration!");
       return;
     }
@@ -116,7 +116,7 @@ const UserLoginForm = () => {
           province: formData.province,
           whatsappNo: formData.whatsappNo,
           country: formData.country,
-          image: imageUrl, // Include the uploaded image URL
+          image: imageUrl, 
         }),
       });
 

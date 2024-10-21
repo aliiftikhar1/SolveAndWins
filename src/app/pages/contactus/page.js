@@ -25,7 +25,7 @@ function ContactUsPage() {
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900">Phone</h2>
                   <p className="mt-4 text-lg text-gray-700">
-                    +1 (123) 456-7890
+                  +923356768338
                   </p>
                 </div>
               </div>
@@ -35,7 +35,7 @@ function ContactUsPage() {
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900">Email</h2>
                   <p className="mt-4 text-lg text-gray-700">
-                    support@solveandwin.com
+                    solveandwins@gmail.com
                   </p>
                 </div>
               </div>
@@ -45,7 +45,7 @@ function ContactUsPage() {
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900">Address</h2>
                   <p className="mt-4 text-lg text-gray-700">
-                    123 Education Lane, Knowledge City
+                    Mandi Bahaduddin, Punjab, Pakistan
                   </p>
                 </div>
               </div>

@@ -9,13 +9,13 @@ const Footer = () => {
       <div className="md:w-1/2 mb-8 md:mb-0">
           <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
           <p className="mb-4">
-            <strong>Email:</strong> support@solveandwin.com
+            <strong>Email:</strong> solveandwins@gmail.com
           </p>
           <p className="mb-4">
-            <strong>Phone:</strong> +1 (800) 123-4567
+            <strong>Phone:</strong> +923356768338
           </p>
           <p className="mb-4">
-            <strong>Address:</strong> 123 Innovation Drive, Tech City, TX 75001
+            <strong>Address:</strong> Mandi Bahaduddin, Punjab, Pakistan
           </p>
           <div className="flex space-x-4 mt-6">
             <a href="#" className="text-2xl hover:text-blue-500">
@@ -83,8 +83,8 @@ const Footer = () => {
           <p className="mt-4">
             123 Innovation Drive, Tech City, TX 75001
           </p>
-          <p className="mt-2">Email: support@solveandwin.com</p>
-          <p className="mt-2">Phone: +1 (800) 123-4567</p>
+          <p className="mt-2">Email: solveandwins@gmail.com</p>
+          <p className="mt-2">Phone: +923356768338</p>
         </div>
       </div>
     </footer>
