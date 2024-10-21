@@ -81,7 +81,7 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-4">Company Information</h3>
           <p>&copy; 2023 Solveandwin, Inc. All rights reserved.</p>
           <p className="mt-4">
-            123 Innovation Drive, Tech City, TX 75001
+            Mandi Bahauddin, Punjab, Pakistan
           </p>
           <p className="mt-2">Email: solveandwins@gmail.com</p>
           <p className="mt-2">Phone: +923356768338</p>
